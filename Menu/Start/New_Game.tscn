@@ -1,109 +1,78 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=7 format=3 uid="uid://dqtke54h7sdne"]
 
-[ext_resource path="res://Asset/Font/comic-sans-ms/COMIC.TTF" type="DynamicFontData" id=1]
-[ext_resource path="res://Menu/Start/New_Game.gd" type="Script" id=2]
-[ext_resource path="res://Asset/Image/Icon/reset.png" type="Texture" id=3]
-[ext_resource path="res://Asset/Image/Background/Gold_Coins.jpg" type="Texture" id=4]
+[ext_resource type="FontFile" uid="uid://pcb2oduw3701" path="res://Asset/Font/comic-sans-ms/COMIC.TTF" id="1"]
+[ext_resource type="Script" path="res://Menu/Start/New_Game.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://b5y1dlbo1d5ll" path="res://Asset/Image/Icon/reset.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://c82xa8wj5isqy" path="res://Asset/Image/Background/Gold_Coins.jpg" id="4"]
 
-[sub_resource type="StyleBoxTexture" id=5]
-texture = ExtResource( 4 )
-region_rect = Rect2( 0, 0, 1920, 1146 )
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fs8ce"]
+texture = ExtResource("4")
 
-[sub_resource type="DynamicFont" id=2]
-size = 50
-outline_size = 10
-outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 1 )
-
-[sub_resource type="DynamicFont" id=3]
-size = 30
-outline_size = 8
-outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 1 )
-
-[sub_resource type="DynamicFont" id=4]
-size = 25
-font_data = ExtResource( 1 )
-
-[sub_resource type="DynamicFont" id=1]
-size = 30
-font_data = ExtResource( 1 )
+[sub_resource type="FontVariation" id="FontVariation_wdybp"]
+base_font = ExtResource("1")
+variation_embolden = 0.5
 
 [node name="New_Game" type="PanelContainer"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/panel = SubResource( 5 )
-script = ExtResource( 2 )
+theme_override_styles/panel = SubResource("StyleBoxTexture_fs8ce")
+script = ExtResource("2")
 
 [node name="VBox" type="VBoxContainer" parent="."]
-margin_right = 1024.0
-margin_bottom = 600.0
+layout_mode = 2
 alignment = 1
 
 [node name="Title" type="Label" parent="VBox"]
-margin_top = 116.0
-margin_right = 1024.0
-margin_bottom = 187.0
-custom_fonts/font = SubResource( 2 )
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 11
+theme_override_fonts/font = SubResource("FontVariation_wdybp")
+theme_override_font_sizes/font_size = 80
 text = "New Game"
-align = 1
+horizontal_alignment = 1
 
 [node name="Name_Label" type="Label" parent="VBox"]
-margin_top = 191.0
-margin_right = 1024.0
-margin_bottom = 280.0
-custom_fonts/font = SubResource( 3 )
-text = "
-Character Name:"
-align = 1
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 11
+theme_override_fonts/font = SubResource("FontVariation_wdybp")
+theme_override_font_sizes/font_size = 35
+text = "Character Name:"
+horizontal_alignment = 1
 
 [node name="Player_Name" type="HBoxContainer" parent="VBox"]
-margin_top = 284.0
-margin_right = 1024.0
-margin_bottom = 330.0
+layout_mode = 2
 alignment = 1
 
 [node name="Line_Edit" type="LineEdit" parent="VBox/Player_Name"]
-margin_left = 335.0
-margin_right = 635.0
-margin_bottom = 46.0
-rect_min_size = Vector2( 300, 40 )
+custom_minimum_size = Vector2(300, 40)
+layout_mode = 2
 size_flags_horizontal = 4
-custom_fonts/font = SubResource( 4 )
+theme_override_font_sizes/font_size = 30
 text = "Player Name"
-align = 1
 
 [node name="Random_Name" type="Button" parent="VBox/Player_Name"]
-margin_left = 639.0
-margin_right = 689.0
-margin_bottom = 46.0
-rect_min_size = Vector2( 50, 30 )
-icon = ExtResource( 3 )
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+icon = ExtResource("3")
 expand_icon = true
 
 [node name="Start" type="Button" parent="VBox"]
-margin_left = 422.0
-margin_top = 334.0
-margin_right = 602.0
-margin_bottom = 383.0
+layout_mode = 2
 size_flags_horizontal = 4
-custom_fonts/font = SubResource( 1 )
+theme_override_font_sizes/font_size = 30
 text = "Start Game!"
 
 [node name="Divider" type="Label" parent="VBox"]
-margin_top = 387.0
-margin_right = 1024.0
-margin_bottom = 430.0
-custom_fonts/font = SubResource( 3 )
-align = 1
+layout_mode = 2
 
 [node name="Back" type="Button" parent="VBox"]
-margin_left = 446.0
-margin_top = 434.0
-margin_right = 577.0
-margin_bottom = 483.0
+layout_mode = 2
 size_flags_horizontal = 4
-custom_fonts/font = SubResource( 1 )
+theme_override_font_sizes/font_size = 30
 text = "   Back   "
 
 [connection signal="pressed" from="VBox/Player_Name/Random_Name" to="." method="random_name"]

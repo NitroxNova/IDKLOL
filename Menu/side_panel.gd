@@ -18,4 +18,4 @@ func _on_Quit_pressed():
 
 
 func _on_Menu_pressed():
-	get_tree().change_scene("res://Menu/Start/Start_Menu.tscn")
+	get_tree().change_scene_to_file("res://Menu/Start/Start_Menu.tscn")

@@ -6,94 +6,13 @@
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
 
-config_version=4
-
-_global_script_classes=[ {
-"base": "System",
-"class": "Check_For_Dead_System",
-"language": "GDScript",
-"path": "res://ECS/System/Check_For_Dead.gd"
-}, {
-"base": "System",
-"class": "Combat_System",
-"language": "GDScript",
-"path": "res://ECS/System/Combat.gd"
-}, {
-"base": "Reference",
-"class": "Component_Reference",
-"language": "GDScript",
-"path": "res://ECS/Component.gd"
-}, {
-"base": "System",
-"class": "Damage_System",
-"language": "GDScript",
-"path": "res://ECS/System/Damage.gd"
-}, {
-"base": "Resource",
-"class": "Dungeon_Builder",
-"language": "GDScript",
-"path": "res://Game/Builder/Dungeon.gd"
-}, {
-"base": "Resource",
-"class": "Entity_Component_System",
-"language": "GDScript",
-"path": "res://ECS/ECS.gd"
-}, {
-"base": "System",
-"class": "Monster_AI_System",
-"language": "GDScript",
-"path": "res://ECS/System/Monster_AI.gd"
-}, {
-"base": "System",
-"class": "Move_System",
-"language": "GDScript",
-"path": "res://ECS/System/Move.gd"
-}, {
-"base": "System",
-"class": "Render_System",
-"language": "GDScript",
-"path": "res://ECS/System/Render.gd"
-}, {
-"base": "System",
-"class": "Save_System",
-"language": "GDScript",
-"path": "res://ECS/System/Save.gd"
-}, {
-"base": "Resource",
-"class": "State",
-"language": "GDScript",
-"path": "res://ECS/State.gd"
-}, {
-"base": "Resource",
-"class": "System",
-"language": "GDScript",
-"path": "res://ECS/System.gd"
-}, {
-"base": "System",
-"class": "Visibility_System",
-"language": "GDScript",
-"path": "res://ECS/System/Visibility.gd"
-} ]
-_global_script_class_icons={
-"Check_For_Dead_System": "",
-"Combat_System": "",
-"Component_Reference": "",
-"Damage_System": "",
-"Dungeon_Builder": "",
-"Entity_Component_System": "",
-"Monster_AI_System": "",
-"Move_System": "",
-"Render_System": "",
-"Save_System": "",
-"State": "",
-"System": "",
-"Visibility_System": ""
-}
+config_version=5
 
 [application]
 
 config/name="Idklol"
 run/main_scene="res://Menu/Start/Start_Menu.tscn"
+config/features=PackedStringArray("4.0")
 config/icon="res://icon.png"
 
 [autoload]
@@ -108,27 +27,27 @@ common/drop_mouse_on_gui_input_disabled=true
 
 move_left={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":65,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
-, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777231,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
- ]
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":65,"physical_keycode":0,"key_label":0,"unicode":97,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194319,"physical_keycode":0,"key_label":0,"unicode":0,"echo":false,"script":null)
+]
 }
 move_right={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":68,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
-, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777233,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
- ]
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":68,"physical_keycode":0,"key_label":0,"unicode":100,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194321,"physical_keycode":0,"key_label":0,"unicode":0,"echo":false,"script":null)
+]
 }
 move_forward={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":87,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
-, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777232,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
- ]
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":87,"physical_keycode":0,"key_label":0,"unicode":119,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194320,"physical_keycode":0,"key_label":0,"unicode":0,"echo":false,"script":null)
+]
 }
 move_back={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":83,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
-, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777234,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
- ]
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":83,"physical_keycode":0,"key_label":0,"unicode":115,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194322,"physical_keycode":0,"key_label":0,"unicode":0,"echo":false,"script":null)
+]
 }
 
 [layer_names]
@@ -142,4 +61,4 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
-environment/default_environment="res://default_env.tres"
+environment/defaults/default_environment="res://default_env.tres"

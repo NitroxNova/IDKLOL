@@ -1,12 +1,12 @@
-extends Spatial
+extends Node3D
 #
 var state : State
 #
 func _ready():
 	state = State.new()
-	state.connect("log_message",$side_panel,"log_message")
-	state.connect("render_entity",self,"render_entity")
-	state.connect("player_health",$side_panel/VBox/Health_Bar,"set_value")
+	state.connect("log_message",Callable($side_panel,"log_message"))
+	state.connect("render_entity",Callable(self,"render_entity"))
+	state.connect("player_health",Callable($side_panel/VBox/Health_Bar,"set_value"))
 
 func update_menu():
 	var player = state.ECS.get_entity(state.current_player)
@@ -17,8 +17,8 @@ func update_menu():
 func new_game(player_name : String):
 	var ECS = state.ECS
 	var dm = Dungeon_Builder.new(80,50,state)
-	var first_room = dm.rooms[0].get_center()*2
-	var player_pos = Vector3(first_room.x,-1,first_room.y)
+	var first_room = dm.rooms[0].get_center()
+	var player_pos = Vector3(first_room.x*2,.5,first_room.y*2)
 	
 	var p_data = {}
 	p_data.player = true
@@ -30,7 +30,7 @@ func new_game(player_name : String):
 	p_data.viewshed = 16
 	state.current_player = ECS.create_entity(p_data)
 
-	state.save_file = "user://save/" + player_name + "_" + str(OS.get_unix_time()) + ".save"
+	state.save_file = "user://save/" + player_name + "_" + str(Time.get_unix_time_from_system()) + ".save"
 	update_menu()
 #
 func load_game(file_path:String):
@@ -71,11 +71,11 @@ func _process(delta):
 		move_direction = move_direction.normalized()
 		move_direction *= 10
 		if not move_direction == Vector3.ZERO:
-			move_direction += Vector3.DOWN
 			state.ECS.add_component(state.current_player,"move",move_direction)
 			state.state = state.RUN
 
 func render_entity(entity:Node):
+#	print("rendering entity")
 	add_child(entity)
 
 func _on_Save_pressed():

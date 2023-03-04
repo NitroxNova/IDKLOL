@@ -1,4 +1,4 @@
-extends Area
+extends Area3D
 
 func set_radius(radius:float):
-	$CollisionShape.shape.radius = radius
+	$CollisionShape3D.shape.radius = radius

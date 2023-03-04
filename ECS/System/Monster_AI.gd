@@ -12,5 +12,5 @@ static func run(delta:float, state:State):
 				var b_entity = ECS.get_entity(body.e_id)
 				if "player" in b_entity and not "dead" in b_entity:
 					if Visibility_System.is_visible(node,body):
-						var move_dir = node.global_translation.direction_to(body.global_translation)
+						var move_dir = node.global_position.direction_to(body.global_position)
 						ECS.add_component(e_id,"move",move_dir*8)

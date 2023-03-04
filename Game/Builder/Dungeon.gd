@@ -54,7 +54,7 @@ func generate_rooms():
 			if new_room.intersects(other_room,true):
 				valid = false
 		if valid:
-			if not rooms.empty():
+			if not rooms.is_empty():
 				var new_center = new_room.get_center()
 				var prev_center = rooms[rooms.size()-1].get_center()
 				if randf() < .5:
@@ -98,7 +98,7 @@ func render():
 				model_path = "res://Game/Entity/Wall.tscn"
 			var data = {}
 			data.renderable = model_path
-			data.needs_render = Vector3(x*2,-1,y*2)
+			data.needs_render = Vector3(x*2,0,y*2)
 			var entity = state.ECS.create_entity(data)
 	for room in rooms:
 		#dont spawn monsters in first room
@@ -107,4 +107,4 @@ func render():
 			for m in m_count:
 				var spawn_x = RNG.randf_range(room.position.x+1,room.position.x+room.size.x-1)
 				var spawn_z = RNG.randf_range(room.position.y+1,room.position.y+room.size.y-1)
-				spawn_monster(Vector3(spawn_x*2,0,spawn_z*2))
+				spawn_monster(Vector3(spawn_x*2,.5,spawn_z*2))

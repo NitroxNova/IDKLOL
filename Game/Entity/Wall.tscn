@@ -1,21 +1,21 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=5 format=3 uid="uid://bbyo7osdeonh6"]
 
-[ext_resource path="res://Game/Entity.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Asset/3D_Model/Wall/texture.png" type="Texture" id=2]
+[ext_resource type="PackedScene" path="res://Game/Entity.tscn" id="1"]
+[ext_resource type="Texture2D" uid="uid://dt2a5b4bgsloq" path="res://Asset/3D_Model/Wall/texture.png" id="2"]
 
-[sub_resource type="SpatialMaterial" id=1]
-albedo_texture = ExtResource( 2 )
+[sub_resource type="StandardMaterial3D" id="1"]
+albedo_texture = ExtResource("2")
 
-[sub_resource type="BoxShape" id=2]
-extents = Vector3( 1, 1.5, 1 )
+[sub_resource type="BoxShape3D" id="2"]
+size = Vector3(2, 3, 2)
 
-[node name="Entity" instance=ExtResource( 1 )]
+[node name="Entity" instance=ExtResource("1")]
 
-[node name="CSGBox" type="CSGBox" parent="." index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.37137, 0 )
-height = 3.0
-material = SubResource( 1 )
+[node name="CSGBox3D" type="CSGBox3D" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.28689, 0)
+size = Vector3(2, 3, 2)
+material = SubResource("1")
 
-[node name="CollisionShape" type="CollisionShape" parent="." index="1"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.37137, 0 )
-shape = SubResource( 2 )
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.28689, 0)
+shape = SubResource("2")

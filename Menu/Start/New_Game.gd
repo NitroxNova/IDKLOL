@@ -17,11 +17,11 @@ func random_name():
 	$VBox/Player_Name/Line_Edit.text = RNG.array_rand(name_list)
 	
 func _on_Back_pressed():
-	get_tree().change_scene("res://Menu/Start/Start_Menu.tscn")
+	get_tree().change_scene_to_file("res://Menu/Start/Start_Menu.tscn")
 
 func _on_Start_pressed():
-	var game = load("res://Game/Main.tscn").instance()
-	game.connect("ready",game,"new_game",[$VBox/Player_Name/Line_Edit.text])
+	var game = load("res://Game/Main.tscn").instantiate()
+	game.connect("ready",Callable(game,"new_game").bind($VBox/Player_Name/Line_Edit.text))
 	var tree = get_tree()
 	tree.get_root().remove_child(self) 
 	tree.get_root().add_child(game)

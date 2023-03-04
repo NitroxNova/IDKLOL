@@ -10,4 +10,4 @@ static func run(delta:float,state:State):
 				state.emit_signal("log_message",entity.name + " has died")
 				ECS.add_component(e_id,"dead",true)
 				var node = entity.rendered
-				node.translation.y = -1.5
+				node.position.y = -0.2

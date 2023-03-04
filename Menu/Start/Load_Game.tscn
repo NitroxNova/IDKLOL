@@ -1,107 +1,74 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=6 format=3 uid="uid://ccxgvr8uaoppg"]
 
-[ext_resource path="res://Asset/Font/comic-sans-ms/COMIC.TTF" type="DynamicFontData" id=1]
-[ext_resource path="res://Menu/Start/Load_Game.gd" type="Script" id=2]
-[ext_resource path="res://Asset/Image/Background/Gold_Coins.jpg" type="Texture" id=3]
+[ext_resource type="FontFile" uid="uid://pcb2oduw3701" path="res://Asset/Font/comic-sans-ms/COMIC.TTF" id="1"]
+[ext_resource type="Script" path="res://Menu/Start/Load_Game.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://c82xa8wj5isqy" path="res://Asset/Image/Background/Gold_Coins.jpg" id="3"]
 
-[sub_resource type="StyleBoxTexture" id=5]
-texture = ExtResource( 3 )
-region_rect = Rect2( 0, 0, 1920, 1146 )
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fs8ce"]
+texture = ExtResource("3")
 
-[sub_resource type="DynamicFont" id=1]
-size = 50
-outline_size = 10
-outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 1 )
-
-[sub_resource type="DynamicFont" id=2]
-size = 30
-font_data = ExtResource( 1 )
-
-[sub_resource type="DynamicFont" id=6]
-size = 25
-font_data = ExtResource( 1 )
-
-[sub_resource type="DynamicFont" id=3]
-size = 30
-font_data = ExtResource( 1 )
+[sub_resource type="FontVariation" id="FontVariation_wdybp"]
+base_font = ExtResource("1")
+variation_embolden = 0.5
 
 [node name="Load_Game" type="PanelContainer"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/panel = SubResource( 5 )
-script = ExtResource( 2 )
-__meta__ = {
-"_editor_description_": ""
-}
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_fs8ce")
+script = ExtResource("2")
 
 [node name="VBox" type="VBoxContainer" parent="."]
-margin_right = 1024.0
-margin_bottom = 600.0
+layout_mode = 2
 alignment = 1
 
 [node name="Title" type="Label" parent="VBox"]
-margin_top = 12.0
-margin_right = 1024.0
-margin_bottom = 83.0
-custom_fonts/font = SubResource( 1 )
-text = "Load Game"
-align = 1
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 11
+theme_override_fonts/font = SubResource("FontVariation_wdybp")
+theme_override_font_sizes/font_size = 80
+text = "New Game"
+horizontal_alignment = 1
 
 [node name="Divider" type="Label" parent="VBox"]
-margin_top = 87.0
-margin_right = 1024.0
-margin_bottom = 130.0
-custom_fonts/font = SubResource( 2 )
-align = 1
+layout_mode = 2
 
 [node name="Saves" type="ScrollContainer" parent="VBox"]
-margin_left = 112.0
-margin_top = 134.0
-margin_right = 912.0
-margin_bottom = 534.0
-rect_min_size = Vector2( 800, 400 )
+custom_minimum_size = Vector2(800, 400)
+layout_mode = 2
 size_flags_horizontal = 4
 
 [node name="ItemList" type="ItemList" parent="VBox/Saves"]
-margin_right = 800.0
-margin_bottom = 400.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_fonts/font = SubResource( 6 )
 auto_height = true
 
 [node name="Buttons" type="HBoxContainer" parent="VBox"]
-margin_top = 538.0
-margin_right = 1024.0
-margin_bottom = 587.0
-custom_constants/separation = 80
+layout_mode = 2
+theme_override_constants/separation = 150
 alignment = 1
 
 [node name="Back" type="Button" parent="VBox/Buttons"]
-margin_left = 248.0
-margin_right = 379.0
-margin_bottom = 49.0
+layout_mode = 2
 size_flags_horizontal = 4
-custom_fonts/font = SubResource( 3 )
+theme_override_font_sizes/font_size = 25
 text = "   Back   "
 
 [node name="Load" type="Button" parent="VBox/Buttons"]
-margin_left = 459.0
-margin_right = 591.0
-margin_bottom = 49.0
+layout_mode = 2
 size_flags_horizontal = 4
-custom_colors/font_color_hover = Color( 0, 0.796078, 0.0666667, 1 )
-custom_fonts/font = SubResource( 3 )
+theme_override_font_sizes/font_size = 25
 text = "   Load   "
 
 [node name="Delete" type="Button" parent="VBox/Buttons"]
-margin_left = 671.0
-margin_right = 775.0
-margin_bottom = 49.0
+layout_mode = 2
 size_flags_horizontal = 4
-custom_colors/font_color_hover = Color( 0.890196, 0, 0, 1 )
-custom_fonts/font = SubResource( 3 )
+theme_override_font_sizes/font_size = 25
 text = "Delete"
 
 [connection signal="pressed" from="VBox/Buttons/Back" to="." method="_on_Back_pressed"]

@@ -1,86 +1,66 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=7 format=3 uid="uid://bwoljh3rmoaa3"]
 
-[ext_resource path="res://Asset/Font/comic-sans-ms/COMIC.TTF" type="DynamicFontData" id=1]
-[ext_resource path="res://Asset/Font/comic-sans-ms/comici.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://Menu/Start/Start_Menu.gd" type="Script" id=3]
-[ext_resource path="res://Asset/Image/Background/Gold_Coins.jpg" type="Texture" id=4]
+[ext_resource type="FontFile" uid="uid://pcb2oduw3701" path="res://Asset/Font/comic-sans-ms/COMIC.TTF" id="1"]
+[ext_resource type="Script" path="res://Menu/Start/Start_Menu.gd" id="3"]
+[ext_resource type="Texture2D" uid="uid://c82xa8wj5isqy" path="res://Asset/Image/Background/Gold_Coins.jpg" id="4"]
 
-[sub_resource type="StyleBoxTexture" id=5]
-texture = ExtResource( 4 )
-region_rect = Rect2( 0, 0, 1920, 1146 )
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_2yyjh"]
 
-[sub_resource type="DynamicFont" id=1]
-size = 100
-outline_size = 12
-outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 1 )
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_y8bq2"]
+texture = ExtResource("4")
 
-[sub_resource type="DynamicFont" id=2]
-size = 30
-outline_size = 8
-outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 2 )
-
-[sub_resource type="DynamicFont" id=3]
-size = 30
-font_data = ExtResource( 1 )
+[sub_resource type="FontVariation" id="FontVariation_wdybp"]
+base_font = ExtResource("1")
+variation_embolden = 0.5
 
 [node name="Start_Menu" type="PanelContainer"]
+material = SubResource("CanvasItemMaterial_2yyjh")
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/panel = SubResource( 5 )
-script = ExtResource( 3 )
-__meta__ = {
-"_editor_description_": ""
-}
+theme_override_styles/panel = SubResource("StyleBoxTexture_y8bq2")
+script = ExtResource("3")
 
 [node name="VBox" type="VBoxContainer" parent="."]
-margin_right = 1024.0
-margin_bottom = 600.0
+layout_mode = 2
 alignment = 1
 
 [node name="Title" type="Label" parent="VBox"]
-margin_top = 103.0
-margin_right = 1024.0
-margin_bottom = 244.0
-custom_fonts/font = SubResource( 1 )
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 17
+theme_override_fonts/font = SubResource("FontVariation_wdybp")
+theme_override_font_sizes/font_size = 100
 text = "IDKLOL"
-align = 1
+horizontal_alignment = 1
 
-[node name="Subtitle" type="Label" parent="VBox"]
-margin_top = 248.0
-margin_right = 1024.0
-margin_bottom = 337.0
-custom_fonts/font = SubResource( 2 )
-text = "Interactive Dungeon Krawler : Lots of Loot!
-"
-align = 1
+[node name="Title2" type="Label" parent="VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 11
+theme_override_fonts/font = SubResource("FontVariation_wdybp")
+theme_override_font_sizes/font_size = 35
+text = "Interactive Dungeon Krawler : Lots of Loot!"
+horizontal_alignment = 1
 
 [node name="New" type="Button" parent="VBox"]
-margin_left = 448.0
-margin_top = 341.0
-margin_right = 575.0
-margin_bottom = 390.0
+layout_mode = 2
 size_flags_horizontal = 4
-custom_fonts/font = SubResource( 3 )
+theme_override_font_sizes/font_size = 30
 text = "   New   "
 
 [node name="Load" type="Button" parent="VBox"]
-margin_left = 446.0
-margin_top = 394.0
-margin_right = 578.0
-margin_bottom = 443.0
+layout_mode = 2
 size_flags_horizontal = 4
-custom_fonts/font = SubResource( 3 )
+theme_override_font_sizes/font_size = 30
 text = "   Load   "
 
 [node name="Quit" type="Button" parent="VBox"]
-margin_left = 447.0
-margin_top = 447.0
-margin_right = 577.0
-margin_bottom = 496.0
+layout_mode = 2
 size_flags_horizontal = 4
-custom_fonts/font = SubResource( 3 )
+theme_override_font_sizes/font_size = 30
 text = "   Quit   "
 
 [connection signal="pressed" from="VBox/New" to="." method="_on_New_pressed"]
