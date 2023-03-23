@@ -4,6 +4,10 @@ class_name Entity_Component_System
 var entity = {}
 var component = {}
 
+signal log_message
+signal render_entity
+signal can_pickup_item
+
 func _init():
 	init_components()
 
@@ -17,6 +21,13 @@ func create_entity(data={}):
 	entity[id] = {}
 	add_component_multi(id,data)
 	return id
+
+#dont call directly, add "needs_removal" component instead
+func remove_entity(e_id):
+	var l_entity = get_entity(e_id)
+	for c_name in l_entity:
+		component[c_name].erase(e_id)
+	entity.erase(e_id)
 
 func rand_id():
 	var id = randi()

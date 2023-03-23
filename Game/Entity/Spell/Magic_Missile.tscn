@@ -1,0 +1,77 @@
+[gd_scene load_steps=12 format=3 uid="uid://bpslmx643n18t"]
+
+[ext_resource type="Script" path="res://Game/Entity.gd" id="1_3hv8x"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_s8fli"]
+radius = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bagi2"]
+transparency = 1
+albedo_color = Color(0.384314, 0.65098, 1, 0.501961)
+
+[sub_resource type="SphereMesh" id="SphereMesh_r32k6"]
+material = SubResource("StandardMaterial3D_bagi2")
+radius = 0.1
+height = 0.2
+radial_segments = 32
+rings = 16
+
+[sub_resource type="Gradient" id="Gradient_8lh5q"]
+offsets = PackedFloat32Array(0, 0.658537)
+colors = PackedColorArray(0, 0.835294, 1, 1, 0, 0, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_i87l4"]
+gradient = SubResource("Gradient_8lh5q")
+
+[sub_resource type="Curve" id="Curve_61h2g"]
+_data = [Vector2(0, 1), 0.0, -1.0, 0, 1, Vector2(1, 0), -1.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_f06pr"]
+curve = SubResource("Curve_61h2g")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_y08yo"]
+direction = Vector3(0, 0, 0)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_f06pr")
+color = Color(1, 1, 1, 0.0823529)
+color_ramp = SubResource("GradientTexture1D_i87l4")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n70xl"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 1, 1, 0.317647)
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_eap7d"]
+material = SubResource("StandardMaterial3D_n70xl")
+radius = 0.1
+section_length = 0.1
+cap_top = false
+cap_bottom = false
+
+[node name="Entity" type="RigidBody3D"]
+collision_layer = 8
+collision_mask = 3
+mass = 0.01
+gravity_scale = 0.0
+continuous_cd = true
+max_contacts_reported = 1
+contact_monitor = true
+can_sleep = false
+linear_damp_mode = 1
+script = ExtResource("1_3hv8x")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_s8fli")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="."]
+mesh = SubResource("SphereMesh_r32k6")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.180506)
+amount = 100
+lifetime = 0.3
+fixed_fps = 120
+process_material = SubResource("ParticleProcessMaterial_y08yo")
+draw_pass_1 = SubResource("TubeTrailMesh_eap7d")

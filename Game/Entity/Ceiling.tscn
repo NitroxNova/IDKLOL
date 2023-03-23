@@ -1,19 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://cvuuax6o6m5oq"]
+[gd_scene load_steps=4 format=3 uid="uid://x4b6huptwdxq"]
 
-[ext_resource type="Script" path="res://Game/Entity.gd" id="1_p0inw"]
-[ext_resource type="Material" uid="uid://jyvmtn4wef8n" path="res://Asset/3D_Model/Material/PavingStones037.tres" id="2_lseym"]
+[ext_resource type="Script" path="res://Game/Entity.gd" id="1_y71od"]
+[ext_resource type="Material" uid="uid://cd5emk8xekf0d" path="res://Asset/3D_Model/Material/Planks012.tres" id="2_k7vve"]
 
 [sub_resource type="BoxShape3D" id="2"]
 size = Vector3(2, 0.2, 2)
 
 [node name="Entity" type="StaticBody3D"]
 disable_mode = 1
-script = ExtResource("1_p0inw")
+script = ExtResource("1_y71od")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 size = Vector3(2, 0.2, 2)
-material = ExtResource("2_lseym")
+material = ExtResource("2_k7vve")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)

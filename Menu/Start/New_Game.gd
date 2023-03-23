@@ -1,6 +1,6 @@
 extends PanelContainer
 
-var name_list = ["Achilles","Adamaris","Adelram","Adonias","Adria","Adrian","Adrianna","Aegeus","Agrippa","Ajax",
+var name_list = ["Achilles","Adamaris","Adelram","Adonias","Aegeus","Agrippa","Ajax",
 "Alaric","Alecia","Alessandra","Alethea","Alexander","Alric","Andromeda","Antigone","Antreas",
 "Apollo","Aquilla","Arathorn","Ares","Ariadne","Ariana","Aries","Arthur","Ashanti","Athena",
 "Atlas","Barron","Beowulf","Blaine","Bolivar","Frederick","Fulbright","Gable",

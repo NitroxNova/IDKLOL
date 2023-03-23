@@ -1,3 +1,4 @@
-extends CharacterBody3D
+extends Node
 
 var e_id : int
+
