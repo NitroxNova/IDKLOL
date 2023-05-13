@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://chaxlytavwjmi"]
+
+[ext_resource type="Texture2D" uid="uid://bvbtha5213wei" path="res://Asset/Material/PavingStones050_1K-JPG/PavingStones050_1K_Color.jpg" id="1_3k1kg"]
+
+[resource]
+albedo_texture = ExtResource("1_3k1kg")
