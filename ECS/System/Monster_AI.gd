@@ -13,4 +13,6 @@ static func run(delta:float, ECS:Entity_Component_System):
 					if Visibility_System.is_visible(node,body):
 						var move_dir = node.global_position.direction_to(body.global_position).normalized()
 #						move_dir += Vector3.DOWN
+						if not node.is_on_floor():
+							move_dir += Vector3.DOWN * 5
 						ECS.add_component(e_id,"move",move_dir*entity.movement_speed)

@@ -7,6 +7,7 @@ var component = {}
 signal log_message
 signal render_entity
 signal can_pickup_item
+signal update_camera
 
 func _init():
 	init_components()

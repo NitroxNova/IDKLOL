@@ -39,7 +39,7 @@ static func run_summon_projectiles(delta:float, ECS:Entity_Component_System):
 		p_data.needs_render = {}
 		p_data.needs_render.position=entity.rendered.get_node("Hands").global_position
 		var dir_facing_node = entity.rendered.get_node("Direction_Facing")
-		p_data.needs_render.rotation=dir_facing_node.global_rotation
+		p_data.rotation=dir_facing_node.global_rotation
 		var direction = dir_facing_node.global_transform.basis.z
 		p_data.needs_render.linear_velocity = direction.normalized() * item.summons_projectile.speed
 		

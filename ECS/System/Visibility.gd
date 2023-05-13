@@ -2,6 +2,8 @@ extends System
 class_name Visibility_System
 
 static func is_visible(from:Node,to:Node):
+	from = from.get_node("Center_Mass")
+	to = to.get_node("Center_Mass")
 	var space_state = from.get_world_3d().direct_space_state
 	var query = PhysicsRayQueryParameters3D.create(from.global_position,to.global_position,1,[from])
 	var result = space_state.intersect_ray(query)

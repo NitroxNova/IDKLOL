@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://bwoljh3rmoaa3"]
 
-[ext_resource type="FontFile" uid="uid://pcb2oduw3701" path="res://Asset/Font/comic-sans-ms/COMIC.TTF" id="1"]
+[ext_resource type="FontFile" uid="uid://3fglyl43skwr" path="res://Asset/Font/comic-sans-ms/COMIC.TTF" id="1"]
 [ext_resource type="Script" path="res://Menu/Start/Start_Menu.gd" id="3"]
-[ext_resource type="Texture2D" uid="uid://c82xa8wj5isqy" path="res://Asset/Image/Background/Gold_Coins.jpg" id="4"]
+[ext_resource type="Texture2D" uid="uid://jpk1ulgwxis" path="res://Asset/Image/Background/Gold_Coins.jpg" id="4"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_2yyjh"]
 
