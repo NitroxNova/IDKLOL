@@ -8,6 +8,7 @@ func _ready():
 	state.ECS.connect("log_message",log_message)
 	state.ECS.connect("render_entity",render_entity)
 	state.ECS.connect("can_pickup_item",can_pickup_item)
+	state.ECS.connect("update_camera",update_camera)
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func pause_game():
@@ -15,6 +16,14 @@ func pause_game():
 
 func unpause_game():
 	$Game_Window/SubViewport.process_mode = Node.PROCESS_MODE_INHERIT
+	
+func update_camera():
+	var player = state.ECS.get_entity(state.current_player)
+	var minimap_xform = player.rendered.get_node("Minimap_Remote_XForm")
+#	print(minimap_xform)	
+	var remote_path = minimap_xform.get_path_to($Game_Window/SubViewport/PanelContainer/Mini_Map/SubViewport/Camera3D)
+#	print(remote_path)
+	minimap_xform.remote_path = remote_path
 
 func can_pickup_item(item_id):
 	item_to_pickup = item_id
@@ -34,9 +43,13 @@ func update_menu():
 
 func new_game(player_name : String):
 	var ECS = state.ECS
-	var dm = Dungeon_Builder.new(80,50,state)
-	var first_room = dm.rooms[0].get_center()
-	var player_pos = Vector3(first_room.x*2,.8,first_room.y*2)
+	var world_builder = World_Builder.new()
+	world_builder.connect("create_entity",state.ECS.create_entity)
+	world_builder.build()
+#	var dm = Dungeon_Builder.new(80,50,3,state)
+#	var first_room = dm.levels[0].rooms[0].get_center()
+#	var player_pos = Vector3(first_room.x*2,0,first_room.y*2)
+	var player_pos = world_builder.get_starting_position()
 	state.current_player = Player_Builder.new(player_name,player_pos,state).build()
 	state.save_file = "user://save/" + player_name + "_" + str(Time.get_unix_time_from_system()) + ".save"
 	update_menu()
@@ -122,9 +135,10 @@ func _process(delta):
 		if Input.is_action_pressed("move_back"):
 			move_direction -= player.rendered.global_transform.basis.z
 		if not move_direction == Vector3.ZERO:
-#			move_direction += Vector3.DOWN
 			move_direction = move_direction.normalized()
 			move_direction *= player.movement_speed
+			if not player.rendered.is_on_floor():
+				move_direction += Vector3.DOWN * 5
 			state.ECS.add_component(state.current_player,"move",move_direction)
 			state.state = state.RUN
 

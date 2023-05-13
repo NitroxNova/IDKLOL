@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://dgomfqc13s04a"]
+
+[ext_resource type="Script" path="res://Game/Entity.gd" id="1_8g71y"]
+[ext_resource type="Material" uid="uid://bsuff1xfppy4e" path="res://Asset/Material/groud061.tres" id="1_lf2j8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vioiy"]
+transparency = 1
+albedo_color = Color(0, 0.603922, 1, 0.545098)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wnnjy"]
+
+[node name="deep_water" type="StaticBody3D"]
+script = ExtResource("1_8g71y")
+
+[node name="water" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+size = Vector3(1, 2, 1)
+material = SubResource("StandardMaterial3D_vioiy")
+
+[node name="sand" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.5, 0)
+material = ExtResource("1_lf2j8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.5, 0)
+shape = SubResource("BoxShape3D_wnnjy")

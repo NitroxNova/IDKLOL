@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://dwnao2bbljr1s"]
+
+[ext_resource type="Script" path="res://Game/Entity.gd" id="1_tghk7"]
+[ext_resource type="Material" uid="uid://jtk8b8ha06pr" path="res://Asset/Material/rocks006.tres" id="2_xvhrx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b111p"]
+size = Vector3(1, 2, 1)
+
+[node name="Ground" type="StaticBody3D"]
+script = ExtResource("1_tghk7")
+
+[node name="Mesh" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+size = Vector3(1, 2, 1)
+material = ExtResource("2_xvhrx")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+shape = SubResource("BoxShape3D_b111p")
