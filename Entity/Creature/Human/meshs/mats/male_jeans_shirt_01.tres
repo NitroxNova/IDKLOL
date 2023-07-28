@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://d112oxrf0v1s5"]
+
+[ext_resource type="Texture2D" uid="uid://dgjulmr4bb65r" path="res://Entity/Creature/Human/meshs/mats/male_jeans_shirt_01_diffuse.png" id="1_ljwu4"]
+
+[resource]
+albedo_texture = ExtResource("1_ljwu4")
+normal_enabled = true
+ao_enabled = true
+ao_texture_channel = 4

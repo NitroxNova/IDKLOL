@@ -1,0 +1,56 @@
+[gd_scene load_steps=9 format=3 uid="uid://dy6labyfj05w7"]
+
+[ext_resource type="Script" path="res://Entity/Entity.gd" id="1_6npo1"]
+
+[sub_resource type="Gradient" id="Gradient_ootr6"]
+offsets = PackedFloat32Array(0, 0.105691, 0.235772, 0.487805, 0.731707)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 0, 1, 1, 0.501961, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mwrhg"]
+gradient = SubResource("Gradient_ootr6")
+
+[sub_resource type="Curve" id="Curve_b18fi"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -3.22326, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_4kmwu"]
+curve = SubResource("Curve_b18fi")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jd62p"]
+lifetime_randomness = 1.0
+emission_shape = 1
+emission_sphere_radius = 1.5
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 0.1
+initial_velocity_max = 5.0
+damping_min = 5.0
+damping_max = 5.0
+scale_curve = SubResource("CurveTexture_4kmwu")
+color = Color(1, 1, 1, 0.345098)
+color_ramp = SubResource("GradientTexture1D_mwrhg")
+hue_variation_min = -0.01
+hue_variation_max = 0.01
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qvivi"]
+transparency = 1
+vertex_color_use_as_albedo = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_n0n3v"]
+material = SubResource("StandardMaterial3D_qvivi")
+radius = 1.0
+height = 2.0
+radial_segments = 16
+rings = 8
+
+[node name="Entity" type="GPUParticles3D"]
+emitting = false
+amount = 200
+lifetime = 0.75
+one_shot = true
+explosiveness = 0.9
+process_material = SubResource("ParticleProcessMaterial_jd62p")
+draw_pass_1 = SubResource("SphereMesh_n0n3v")
+script = ExtResource("1_6npo1")
+
+[connection signal="ready" from="." to="." method="restart"]

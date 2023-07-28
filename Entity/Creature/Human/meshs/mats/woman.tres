@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://bjtlljjyqxlu5"]
+
+[ext_resource type="Texture2D" uid="uid://b1uc3y4gf4qp8" path="res://Entity/Creature/Human/meshs/mats/young_lightskinned_female_diffuse2.jpg" id="1_l47kn"]
+
+[resource]
+albedo_texture = ExtResource("1_l47kn")
+roughness = 0.61

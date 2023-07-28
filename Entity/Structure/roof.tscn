@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://cr6hddmn5ect2"]
+
+[ext_resource type="Script" path="res://Entity/Entity.gd" id="1_2erdh"]
+[ext_resource type="Material" uid="uid://dxu5xsbiajyhb" path="res://Asset/Material/Planks012.tres" id="2_s2pd8"]
+[ext_resource type="Material" uid="uid://bcl6fr05w55ul" path="res://Asset/Material/Bricks012.tres" id="3_hdk0l"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_jhexn"]
+
+[node name="Roof" type="StaticBody3D"]
+script = ExtResource("1_2erdh")
+
+[node name="Left_Panel" type="CSGBox3D" parent="."]
+transform = Transform3D(0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, 0, 1.1, -0.25, 0.273892, 0)
+size = Vector3(0.8, 0.1, 1)
+material = ExtResource("2_s2pd8")
+
+[node name="Right_Panel" type="CSGBox3D" parent="."]
+transform = Transform3D(0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0, 1.1, 0.2495, 0.273832, 0)
+size = Vector3(0.8, 0.1, 1)
+material = ExtResource("2_s2pd8")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="."]
+transform = Transform3D(1.00602, 0, 0, 0, 0.512278, 0, 0, 0, 1.00602, 0, 0.218065, 0)
+mesh = SubResource("PrismMesh_jhexn")
+material = ExtResource("3_hdk0l")

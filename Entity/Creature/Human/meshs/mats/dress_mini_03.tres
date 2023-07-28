@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://byww3xe8f5xr8"]
+
+[ext_resource type="Texture2D" uid="uid://cg18i2kt6rut2" path="res://Entity/Creature/Human/meshs/mats/dress_mini_03.PNG" id="1_jed3k"]
+
+[resource]
+albedo_texture = ExtResource("1_jed3k")
