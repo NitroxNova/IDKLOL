@@ -15,7 +15,7 @@ func build():
 	town_builder.connect("create_entity",emit_create_entity)
 	town_builder.render()
 	starting_position = town_builder.get_starting_position()
-	
+#
 	var forest_builder = Forest_Builder.new()
 	forest_builder.connect("create_entity",emit_create_entity)
 	forest_builder.set_size(40,50)

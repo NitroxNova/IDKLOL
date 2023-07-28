@@ -4,17 +4,23 @@ class_name Player_Builder
 var player_name : String
 var position : Vector3
 var state : State
+var genotype : Dictionary
+var clothes = []
 
-func _init(p_name, pos, _state):
-	player_name = p_name
-	position = pos
-	state = _state
-
+func _init(player_name, position, genotype,clothes,state):
+	self.player_name = player_name
+	self.position = position
+	self.state = state
+	self.genotype = genotype
+	self.clothes = clothes
+	
 func build():
 	var p_data = {}
 	p_data.player = true
+	p_data.genotype = genotype
+	p_data.clothes = clothes
 	p_data.name = player_name
-	p_data.renderable = Renderable.PLAYER
+	p_data.renderable = Renderable.HUMAN
 	p_data.needs_render = {rotation=Vector3.ZERO}
 	p_data.position = position
 	p_data.combat_stats = {power=5.0,defense=2.0}

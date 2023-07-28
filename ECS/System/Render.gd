@@ -36,11 +36,20 @@ static func render(delta:float, ECS:Entity_Component_System):
 		if "material" in entity:
 			node.get_node("Mesh").material = Material_3D.get_material(entity.material)
 		node.connect("body_entered",Callable(Collision_System,"body_entered").bind(node,ECS))
+		ECS.remove_component(e_id,"position")
+		if "clothes" in entity:
+			for c in entity.clothes:
+				node.take_on_clothes(c)
+		if "genotype" in entity:
+#			print(entity.genotype)
+			node.appearance = entity.genotype
+			node.generate_all_meshs()
 		ECS.emit_signal("render_entity",node)
 		ECS.add_component(e_id,"rendered",node)
-		ECS.remove_component(e_id,"needs_render")
-		ECS.remove_component(e_id,"position")
 		if "player" in entity:
 			node.get_node("Direction_Facing").add_child(load("res://Game/Player_Camera.tscn").instantiate())
 			ECS.emit_signal("update_camera")
+		ECS.remove_component(e_id,"needs_render")
+			
+			
 	

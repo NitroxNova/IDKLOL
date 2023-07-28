@@ -4,6 +4,7 @@ var component = {}
 
 func _init():
 	component.area_of_effect = {damage=3.0,particles="particle_scene.tscn"}
+	component.clothes = ["male_shirt_01","male_jeans_01"] #temp array for clothing names, will replace with equipment
 	component.combat_stats = {power=2.0,defense=3.0}
 	component.confused = 1.2 #seconds remaining of confusion
 	component.consumable = true #tag
@@ -11,6 +12,7 @@ func _init():
 	component.dead = true #tag component
 	component.drop_item = 123 #item id to drop
 	component.duration = 12.3 #timer in seconds, delete when 0
+	component.genotype = {} #Dictionary of "gene values" will be different for each species
 	component.health = {current=5.0,maximum=6.0}
 	component.inflicts_confusion = 1.2 #seconds of confusion
 	component.inflicts_damage = 12.3
@@ -37,6 +39,7 @@ func _init():
 	component.renderable = Renderable.ORC #id for render type
 	component.rendered = Node.new() #node
 	component.receive_healing = [1.1] # array of healing amounts
+	component.rotate = 1.23 #number of radians to turn around y axis
 	component.rotation = Vector3(0,0,0) # remove after rendering and use node rotation instead
 	component.scale = Vector3(1,1,1) #remove after rendering and use node scale instead
 	component.suffer_damage = [1.1] #array of damage amounts

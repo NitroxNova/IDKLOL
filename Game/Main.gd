@@ -41,7 +41,7 @@ func update_menu():
 	$Game_Window/SubViewport/VBox/Health_Bar.max_value = player.health.maximum
 	set_player_name(player.name)
 
-func new_game(player_name : String):
+func new_game(player_name : String,genotype:Dictionary,clothes:Array):
 	var ECS = state.ECS
 	var world_builder = World_Builder.new()
 	world_builder.connect("create_entity",state.ECS.create_entity)
@@ -50,7 +50,7 @@ func new_game(player_name : String):
 #	var first_room = dm.levels[0].rooms[0].get_center()
 #	var player_pos = Vector3(first_room.x*2,0,first_room.y*2)
 	var player_pos = world_builder.get_starting_position()
-	state.current_player = Player_Builder.new(player_name,player_pos,state).build()
+	state.current_player = Player_Builder.new(player_name,player_pos,genotype,clothes,state).build()
 	state.save_file = "user://save/" + player_name + "_" + str(Time.get_unix_time_from_system()) + ".save"
 	update_menu()
 #
@@ -59,7 +59,6 @@ func load_game(file_path:String):
 	state.current_player = Save_System.load_file(state.ECS, file_path)
 	update_menu()
 #
-
 
 func _input(event):
 	var player = state.ECS.get_entity(state.current_player)
@@ -71,10 +70,7 @@ func _input(event):
 		if event.is_action_pressed("escape"):
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		if event is InputEventMouseMotion:
-			var rotate_amount = event.relative.x * -0.005
-			player.rendered.rotate_y(rotate_amount)
-			var look_up_down = event.relative.y * -0.005
-			look_up_down(look_up_down)
+			look_around(event.relative)
 			clear_pickup_item()
 			looking_toward.force_raycast_update()
 			if looking_toward.is_colliding():
@@ -88,14 +84,19 @@ func _input(event):
 		elif event.is_action_pressed("zoom_out"):
 			camera.zoom_out()
 
-func look_up_down(amount:float):
+func look_around(amount:Vector2):
 	var player = state.ECS.get_entity(state.current_player)
 	var looking_toward = player.rendered.get_node("Direction_Facing")
+	var x_rotation = amount.x * -0.005
+	looking_toward.rotate_y(x_rotation)
+	
 	var max_up_down : float = PI/2
-	var new_rotation = looking_toward.rotation.x - amount
+	var y_rotation = amount.y * 0.005
+	var new_rotation = looking_toward.rotation.x + y_rotation
 	new_rotation = min(new_rotation,max_up_down)
 	new_rotation = max(new_rotation, -1 * max_up_down)
 	looking_toward.rotation.x = new_rotation
+	
 			
 func _physics_process(delta):
 	if state.state == state.RUN:
@@ -126,10 +127,13 @@ func _process(delta):
 	if state.state == state.NEEDS_INPUT:
 		var player = state.ECS.get_entity(state.current_player)
 		var move_direction = Vector3.ZERO
+		var turn_rotation : float = 0
 		if Input.is_action_pressed("move_left"):
-			move_direction += player.rendered.global_transform.basis.x
+#			move_direction += player.rendered.global_transform.basis.x
+			turn_rotation += delta * 3
 		if Input.is_action_pressed("move_right"):
-			move_direction -= player.rendered.global_transform.basis.x
+#			move_direction -= player.rendered.global_transform.basis.x
+			turn_rotation -= delta * 3
 		if Input.is_action_pressed("move_forward"):
 			move_direction += player.rendered.global_transform.basis.z
 		if Input.is_action_pressed("move_back"):
@@ -141,6 +145,10 @@ func _process(delta):
 				move_direction += Vector3.DOWN * 5
 			state.ECS.add_component(state.current_player,"move",move_direction)
 			state.state = state.RUN
+		if not turn_rotation == 0:
+			state.ECS.add_component(state.current_player,"rotate",turn_rotation)
+			state.state = state.RUN
+			
 
 func render_entity(entity:Node):
 #	print("rendering entity")

@@ -13,6 +13,7 @@ func run_systems(delta):
 	Inventory_System.run(delta,ECS)
 	Monster_AI_System.run(delta,ECS)
 	Confusion_System.run(delta,ECS)
+	Rotate_System.run(delta,ECS)
 	Move_System.run(delta,ECS)
 	Projectile_System.run(delta,ECS)
 	Area_Of_Effect_System.run(delta,ECS)
