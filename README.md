@@ -1,8 +1,8 @@
 # IDKLOL  
 based on the ECS Rusty Rouglelike from https://bfnightly.bracketproductions.com/chapter_1.html  
   
-~~~~~~~assets~~~~~~~~~  
-
+ASSETS  
+  
 GoMakeHumanDot - https://github.com/Lexpartizan/Go_MakeHuman_dot  
 MakeHuman - http://www.makehumancommunity.org/  
   
