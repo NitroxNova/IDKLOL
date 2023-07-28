@@ -1,0 +1,1822 @@
+[gd_scene load_steps=5 format=3 uid="uid://bpxo1c1cownri"]
+
+[ext_resource type="Texture2D" uid="uid://dfnnsfa8jcvwd" path="res://Asset/Image/Icon/reset.png" id="1_i2og7"]
+[ext_resource type="PackedScene" uid="uid://gsy4ynu3bp2e" path="res://Menu/char_edit/morph_slider.tscn" id="2"]
+
+[sub_resource type="GDScript" id="1"]
+script/source = "extends Control
+
+var forms = {}
+var character
+var cartoonish =1.0
+var clothes = []
+enum {MALE,FEMALE}
+var gender = MALE
+var names = {MALE:[\"Alexander\",\"Ares\",\"Aristotle\",\"Augustus\",\"Barron\",\"Chad\",\"Frederick\",\"Gaston\",\"Grant\",\"Gregory\",\"Hercules\",\"Leonidas\",\"Octavian\",\"Perseus\",\"Tiberius\",\"Ulysses\"],
+			FEMALE:[\"Alexandra\",\"Andromeda\",\"Antigone\",\"Athena\",\"Cleopatra\",\"Genevieve\",\"Gwynevere\",\"Hannah\",\"Helen\",\"Isabelle\",\"Leona\",\"Lilith\",\"Morgana\",\"Nova\",\"Serana\"]}
+
+func _ready():
+	randomize()
+	set_character(load(\"res://Entity/Creature/Human/Entity.tscn\").instantiate())
+	set_male()
+	random_name()
+	var Body_forms = {}
+	var Head_forms = {}
+	var Exp_forms = {}
+	var morphs=$morphs/Body.get_children()
+	for i in morphs:
+		i.connect(\"change_morph\", Callable(self, \"change_morph\")) #подключаем сигналы со всех слайдеров
+		Body_forms[i.text] = i.vertex_groups
+	morphs=$morphs/Head.get_children()
+	for i in morphs:
+		i.connect(\"change_morph\", Callable(self, \"change_morph\")) #подключаем сигналы со всех слайдеров
+		Head_forms[i.text] = i.vertex_groups
+	morphs=$morphs/Face.get_children()
+	for i in morphs:
+		i.connect(\"change_morph\", Callable(self, \"change_morph\")) #подключаем сигналы со всех слайдеров
+		Head_forms[i.text] = i.vertex_groups
+	morphs=$morphs/Eyes.get_children()
+	for i in morphs:
+		i.connect(\"change_morph\", Callable(self, \"change_morph\")) #подключаем сигналы со всех слайдеров
+		Head_forms[i.text] = i.vertex_groups
+#	morphs=$morphs/Exp.get_children()
+#	for i in morphs:
+#		i.connect(\"change_morph\", Callable(self, \"change_morph\")) #подключаем сигналы со всех слайдеров
+#		Exp_forms[i.text] = i.vertex_groups
+	forms[\"body\"] = Body_forms
+	forms[\"head\"] = Head_forms
+#	forms[\"exp\"] = Exp_forms
+	var path= OS.get_executable_path () # Здесь устанавливаем пути для открытия, сохранения файлов.
+	path =path.substr(0,path.rfind(\"\\\\\")+1)
+	$save_file.current_dir = path
+	$open_file.current_dir = path
+	
+func set_character(human):
+	character = human
+	$cam/spt.add_child(character)
+
+func gender_changed(index):
+	if index == 0:
+		set_male()
+	elif index == 1:
+		set_female()	
+	random_name()
+
+func take_on_clothes(clothing:String):
+	clothes.append(clothing)
+	character.take_on_clothes(clothing)
+	
+func take_off_clothes(clothing:String):
+	clothes.erase(clothing)
+	character.take_off_clothes(clothing)
+		
+func set_male():
+#	print(\"set male\")
+	gender = MALE
+	take_off_clothes(\"dress_mini_03\")
+	take_on_clothes(\"male_shirt_01\")
+	take_on_clothes(\"male_jeans_01\")
+	change_morph(\"man\",1)
+	change_morph(\"woman\",0)
+	$morphs/Body/breast1.hide()
+	change_morph(\"breast1\",0)
+	$morphs/Body/breast2.hide()
+	change_morph(\"breast2\",0)
+	$morphs/Body/breast3.hide()
+	change_morph(\"breast3\",0)
+	$morphs/Body/breast_pam1.hide()
+	change_morph(\"breast_pam1\",0)
+	$morphs/Body/breast_pam2.hide()
+	change_morph(\"breast_pam2\",0)
+	$morphs/Body/breast_pam3.hide()
+	change_morph(\"breast_pam3\",0)
+	$\"morphs/Body/breast_pam4_+\".hide()
+	change_morph(\"breast_pam4_+\",0)
+	$\"morphs/Body/breast_pam4_-\".hide()
+	change_morph(\"breast_pam4_-\",0)
+
+func set_female():
+#	print(\"set female\")
+	gender = FEMALE
+	take_on_clothes(\"dress_mini_03\")
+	take_off_clothes(\"male_shirt_01\")
+	take_off_clothes(\"male_jeans_01\")
+	change_morph(\"man\",0)
+	change_morph(\"woman\",1)
+	$morphs/Body/breast1.show()
+	$morphs/Body/breast1.update()
+	$morphs/Body/breast2.show()
+	$morphs/Body/breast2.update()
+	$morphs/Body/breast3.show()
+	$morphs/Body/breast3.update()
+	$morphs/Body/breast_pam1.show()
+	$morphs/Body/breast_pam1.update()
+	$morphs/Body/breast_pam2.show()
+	$morphs/Body/breast_pam2.update()
+	$morphs/Body/breast_pam3.show()
+	$morphs/Body/breast_pam3.update()
+	$\"morphs/Body/breast_pam4_+\".show()
+	$\"morphs/Body/breast_pam4_+\".update()
+	$\"morphs/Body/breast_pam4_-\".show()
+	$\"morphs/Body/breast_pam4_-\".update()
+
+func change_morph(text,value):
+	character.update_morph(text,value)
+	
+func load_json (filepath):
+	var file=FileAccess.open(filepath,FileAccess.READ)
+	var test_json_conv = JSON.new()
+	test_json_conv.parse(file.get_as_text())
+	var json = test_json_conv.get_data()
+	file.close()
+	return json
+
+func save_json(filepath, value):
+	var file=FileAccess.open(filepath,FileAccess.WRITE)
+	file.store_line(JSON.new().stringify(value))
+	file.close()
+
+func _on_save_pressed():
+	$save_file.popup()
+	$save_file.invalidate()
+
+func _on_open_pressed():
+	$open_file.popup()
+	$open_file.invalidate()
+
+func _on_save_file_file_selected(path):
+	save_json(path,character.appearance)
+
+func _on_open_file_file_selected(path):
+	character.appearance=load_json(path)
+	reset_all_sliders(character.appearance)
+	character.generate_all_meshs()
+
+func reset_tab_slider(morphs, appearance):
+	for sld in morphs:
+		if appearance.has(sld.text):
+			sld.set_slider (appearance[sld.text])
+		else:
+			sld.set_slider(0)
+
+func reset_all_sliders(appearance):
+	reset_tab_slider($morphs/Body.get_children(), appearance)
+	reset_tab_slider($morphs/Head.get_children(), appearance)
+	reset_tab_slider($morphs/Face.get_children(), appearance)
+	reset_tab_slider($morphs/Eyes.get_children(), appearance)
+	reset_tab_slider($morphs/Exp.get_children(), appearance)
+	
+func set_chahracter(chr):
+	character=chr
+	reset_all_sliders(character.appearance)
+
+func _on_random_gen_pressed():
+	character.random_face_gen(cartoonish)
+	reset_tab_slider($morphs/Head.get_children(),character.appearance)
+	reset_tab_slider($morphs/Face.get_children(),character.appearance)
+	reset_tab_slider($morphs/Eyes.get_children(),character.appearance)
+	
+func _on_print_pressed():
+	$tips.text=str(character.appearance)
+
+func set_cartoonish(value):
+	cartoonish = value
+
+func _on_back_pressed():
+	get_tree().change_scene_to_file(\"res://Menu/Start/Start_Menu.tscn\")
+	
+func _on_start_pressed():
+	var game = load(\"res://Game/Main.tscn\").instantiate()
+	var char_name = $morphs/Name/VBox/Name_HBox/LineEdit.text
+	game.connect(\"ready\",Callable(game,\"new_game\").bind(char_name,character.appearance,clothes))
+	var tree = get_tree()
+	tree.get_root().remove_child(self) 
+	tree.get_root().add_child(game)
+	tree.current_scene = game
+
+
+func random_name():
+	$morphs/Name/VBox/Name_HBox/LineEdit.text = RNG.array_rand(names[gender])
+"
+
+[sub_resource type="GDScript" id="2"]
+script/source = "extends Camera3D
+var right_mouse_pressed = false
+var midle_mouse_pressed = false
+var speed_rot=0.005
+var default_translation = Vector3()
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	default_translation = $spt.position
+	pass # Replace with function body.
+
+func _input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_RIGHT:
+			if event.pressed:
+				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+				right_mouse_pressed = true
+			else:
+				Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+				right_mouse_pressed = false
+		if event.button_index == MOUSE_BUTTON_MIDDLE:
+			if event.pressed:
+				midle_mouse_pressed = true
+			else:
+				midle_mouse_pressed = false
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			$spt.position.z += speed_rot*5
+		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			$spt.position.z -= speed_rot*5
+	if event is InputEventMouseMotion:
+		if midle_mouse_pressed:
+			if (abs(event.relative.x) > abs(event.relative.y)):
+				$spt.position.x +=event.relative.x*speed_rot
+			else:
+				$spt.position.y -=event.relative.y*speed_rot
+		if right_mouse_pressed:
+			if (abs(event.relative.x) > abs(event.relative.y)):
+				$spt.rotate_y(event.relative.x*speed_rot)
+			else:
+				$spt.rotate_x(event.relative.y*speed_rot)
+
+
+
+func _on_reset_view_pressed():
+	$spt.position = default_translation
+	$spt.rotation_degrees = Vector3 (0,0,0)
+"
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("1")
+
+[node name="tips" type="Label" parent="."]
+layout_mode = 0
+offset_left = 920.0
+offset_top = 60.0
+offset_right = 1256.0
+offset_bottom = 564.0
+text = "Right mouse - rotate
+Middle mouse Pan
+Wheel - Zoom"
+
+[node name="save_file" type="FileDialog" parent="."]
+access = 2
+filters = PackedStringArray("*.json")
+
+[node name="open_file" type="FileDialog" parent="."]
+access = 2
+filters = PackedStringArray("*.json")
+
+[node name="print" type="Button" parent="."]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -8.0
+offset_top = -30.0
+offset_right = 132.0
+offset_bottom = -2.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "print params"
+
+[node name="random_gen" type="Button" parent="."]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 132.0
+offset_top = -30.0
+offset_right = 311.0
+offset_bottom = -2.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Random face generator"
+
+[node name="Label" type="Label" parent="random_gen"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = -40.0
+offset_right = 178.0
+offset_bottom = -16.0
+text = "face cartoonish"
+
+[node name="HSlider" type="HSlider" parent="random_gen/Label"]
+layout_mode = 0
+offset_left = -8.0
+offset_top = 20.0
+offset_right = 171.0
+offset_bottom = 36.0
+max_value = 1.0
+step = 0.0
+value = 1.0
+ticks_on_borders = true
+
+[node name="reset_view" type="Button" parent="."]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -90.0
+offset_top = -30.0
+offset_right = -8.0
+offset_bottom = -2.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+action_mode = 0
+text = "Reset View"
+
+[node name="Top_Buttons" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -98.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="save" type="Button" parent="Top_Buttons"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+action_mode = 0
+text = "Save"
+
+[node name="open" type="Button" parent="Top_Buttons"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+action_mode = 0
+text = "Open"
+
+[node name="divider" type="Label" parent="Top_Buttons"]
+layout_mode = 2
+text = " ------- "
+
+[node name="back" type="Button" parent="Top_Buttons"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Back"
+
+[node name="start" type="Button" parent="Top_Buttons"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Start"
+
+[node name="cam" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0345633, 0.865932, 1.52344)
+size = 1.5
+near = 0.01
+script = SubResource("2")
+
+[node name="spt" type="Node3D" parent="cam"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0303633, -0.898369, -1.43457)
+
+[node name="morphs" type="TabContainer" parent="."]
+layout_mode = 0
+offset_right = 353.0
+offset_bottom = 720.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Name" type="TabBar" parent="morphs"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="morphs/Name"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Name" type="Label" parent="morphs/Name/VBox"]
+layout_mode = 2
+text = "Name:"
+horizontal_alignment = 1
+
+[node name="Name_HBox" type="HBoxContainer" parent="morphs/Name/VBox"]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="morphs/Name/VBox/Name_HBox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "ASDF"
+
+[node name="Random" type="Button" parent="morphs/Name/VBox/Name_HBox"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+icon = ExtResource("1_i2og7")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Gender" type="Label" parent="morphs/Name/VBox"]
+layout_mode = 2
+text = "Gender:"
+horizontal_alignment = 1
+
+[node name="OptionButton" type="OptionButton" parent="morphs/Name/VBox"]
+layout_mode = 2
+item_count = 2
+selected = 0
+popup/item_0/text = "Male"
+popup/item_0/id = 0
+popup/item_1/text = "Female"
+popup/item_1/id = 1
+
+[node name="Body" type="TabBar" parent="morphs"]
+visible = false
+layout_mode = 2
+
+[node name="fat" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 119.0
+offset_top = 88.0
+offset_right = 209.0
+offset_bottom = 119.0
+text = "fat"
+
+[node name="zombie" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 177.0
+offset_right = 210.0
+offset_bottom = 208.0
+text = "zombie"
+
+[node name="armfat" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 90.0
+offset_right = 326.0
+offset_bottom = 121.0
+text = "armfat"
+vertex_groups = PackedColorArray(0, 1, 0, 1)
+
+[node name="legfat" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 88.0
+offset_right = 90.0
+offset_bottom = 119.0
+text = "legfat"
+vertex_groups = PackedColorArray(0, 0, 1, 1, 0, 1, 1, 1)
+
+[node name="skinny" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 118.0
+offset_right = 326.0
+offset_bottom = 149.0
+text = "skinny"
+
+[node name="muscle" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 119.0
+offset_top = 58.0
+offset_right = 209.0
+offset_bottom = 89.0
+text = "muscle"
+vertex_groups = PackedColorArray(0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1)
+
+[node name="armmuscle" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 58.0
+offset_right = 326.0
+offset_bottom = 89.0
+text = "armmuscle"
+vertex_groups = PackedColorArray(0, 1, 0, 1)
+
+[node name="legmuscle" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 59.0
+offset_right = 90.0
+offset_bottom = 90.0
+text = "legmuscle"
+vertex_groups = PackedColorArray(0, 0, 1, 1, 0, 1, 1, 1)
+
+[node name="old" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 119.0
+offset_top = 118.0
+offset_right = 209.0
+offset_bottom = 149.0
+text = "old"
+
+[node name="child" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 118.0
+offset_right = 90.0
+offset_bottom = 149.0
+text = "child"
+
+[node name="pregnancy" parent="morphs/Body" instance=ExtResource("2")]
+visible = false
+layout_mode = 0
+offset_left = 120.0
+offset_top = 148.0
+offset_right = 210.0
+offset_bottom = 179.0
+text = "pregnancy"
+vertex_groups = PackedColorArray(0, 0, 1, 1)
+
+[node name="stomach+" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 148.0
+offset_right = 326.0
+offset_bottom = 179.0
+text = "stomach+"
+vertex_groups = PackedColorArray(0, 0, 1, 1)
+
+[node name="stomach-" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 148.0
+offset_right = 90.0
+offset_bottom = 179.0
+text = "stomach-"
+vertex_groups = PackedColorArray(0, 0, 1, 1)
+
+[node name="navel-" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 208.0
+offset_right = 90.0
+offset_bottom = 239.0
+text = "navel-"
+vertex_groups = PackedColorArray(0, 0, 1, 1)
+
+[node name="navel+" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 208.0
+offset_right = 326.0
+offset_bottom = 239.0
+text = "navel+"
+vertex_groups = PackedColorArray(0, 0, 1, 1)
+
+[node name="navel_move" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 119.0
+offset_top = 208.0
+offset_right = 209.0
+offset_bottom = 239.0
+text = "navel_move"
+vertex_groups = PackedColorArray(0, 0, 1, 1)
+
+[node name="butt_cast" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 119.0
+offset_top = 238.0
+offset_right = 209.0
+offset_bottom = 269.0
+text = "butt_cast"
+vertex_groups = PackedColorArray(0, 0, 1, 1)
+
+[node name="butt_pam1_+" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 238.0
+offset_right = 326.0
+offset_bottom = 269.0
+text = "butt_pam1_+"
+vertex_groups = PackedColorArray(0, 0, 1, 1)
+
+[node name="butt_pam1_-" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 238.0
+offset_right = 90.0
+offset_bottom = 269.0
+text = "butt_pam1_-"
+vertex_groups = PackedColorArray(0, 0, 1, 1)
+
+[node name="breast1" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 269.0
+offset_right = 90.0
+offset_bottom = 300.0
+text = "breast1"
+vertex_groups = PackedColorArray(0, 1, 0, 1, 0, 0, 1, 1)
+
+[node name="breast2" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 119.0
+offset_top = 268.0
+offset_right = 209.0
+offset_bottom = 299.0
+text = "breast2"
+vertex_groups = PackedColorArray(0, 1, 0, 1, 0, 0, 1, 1)
+
+[node name="breast3" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 268.0
+offset_right = 326.0
+offset_bottom = 299.0
+text = "breast3"
+vertex_groups = PackedColorArray(0, 1, 0, 1, 0, 0, 1, 1)
+
+[node name="breast_pam1" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 298.0
+offset_right = 90.0
+offset_bottom = 329.0
+text = "breast_pam1"
+vertex_groups = PackedColorArray(0, 1, 0, 1, 0, 0, 1, 1)
+
+[node name="breast_pam2" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 119.0
+offset_top = 298.0
+offset_right = 209.0
+offset_bottom = 329.0
+text = "breast_pam2"
+vertex_groups = PackedColorArray(0, 0, 1, 1, 0, 1, 0, 1)
+
+[node name="breast_pam3" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 298.0
+offset_right = 326.0
+offset_bottom = 329.0
+text = "breast_pam3"
+vertex_groups = PackedColorArray(0, 1, 0, 1, 0, 0, 1, 1)
+
+[node name="breast_pam4_+" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 328.0
+offset_right = 332.0
+offset_bottom = 359.0
+text = "breast_pam4_+"
+vertex_groups = PackedColorArray(0, 1, 0, 1, 0, 0, 1, 1)
+
+[node name="breast_pam4_-" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 328.0
+offset_bottom = 359.0
+text = "breast_pam4_-"
+vertex_groups = PackedColorArray(0, 0, 1, 1, 0, 1, 0, 1)
+
+[node name="torso_pam1_+" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 358.0
+offset_right = 332.0
+offset_bottom = 389.0
+text = "torso_pam1_+"
+vertex_groups = PackedColorArray(0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1)
+
+[node name="torso_pam1_-" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 358.0
+offset_bottom = 389.0
+text = "torso_pam1_-"
+vertex_groups = PackedColorArray(0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1)
+
+[node name="torso_pam2_+" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 388.0
+offset_right = 332.0
+offset_bottom = 419.0
+text = "torso_pam2_+"
+vertex_groups = PackedColorArray(0, 1, 0, 1, 0, 0, 1, 1)
+
+[node name="torso_pam3_+" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 418.0
+offset_right = 332.0
+offset_bottom = 449.0
+text = "torso_pam3_+"
+vertex_groups = PackedColorArray(0, 0, 1, 1, 0, 1, 1, 1)
+
+[node name="torso_pam4_+" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 448.0
+offset_right = 332.0
+offset_bottom = 479.0
+text = "torso_pam4_+"
+vertex_groups = PackedColorArray(0, 0, 1, 1, 0, 1, 1, 1)
+
+[node name="torso_pam3_-" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 418.0
+offset_bottom = 449.0
+text = "torso_pam3_-"
+vertex_groups = PackedColorArray(0, 0, 1, 1, 0, 1, 1, 1)
+
+[node name="torso_pam2_-" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 388.0
+offset_bottom = 419.0
+text = "torso_pam2_-"
+vertex_groups = PackedColorArray(0, 0, 1, 1, 0, 1, 0, 1)
+
+[node name="torso_pam4_-" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 448.0
+offset_bottom = 479.0
+text = "torso_pam4_-"
+vertex_groups = PackedColorArray(0, 0, 1, 1, 0, 1, 1, 1)
+
+[node name="torso_pam5_+" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 478.0
+offset_right = 332.0
+offset_bottom = 509.0
+text = "torso_pam5_+"
+vertex_groups = PackedColorArray(0, 0, 1, 1)
+
+[node name="torso_pam5_-" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 479.0
+offset_bottom = 510.0
+text = "torso_pam5_-"
+vertex_groups = PackedColorArray(0, 0, 1, 1)
+
+[node name="torso_pam6" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 511.282
+offset_bottom = 544.282
+text = "torso_pam6"
+vertex_groups = PackedColorArray(0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1)
+
+[node name="torso_pam7" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.663
+offset_top = 512.0
+offset_right = 332.663
+offset_bottom = 545.0
+text = "torso_pam7"
+vertex_groups = PackedColorArray(0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1)
+
+[node name="torso_pam8_+" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 240.0
+offset_top = 545.282
+offset_right = 336.0
+offset_bottom = 578.282
+text = "torso_pam8_+"
+vertex_groups = PackedColorArray(0, 0, 1, 1, 0, 1, 0, 1)
+
+[node name="torso_pam8_-" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 542.0
+offset_bottom = 575.0
+text = "torso_pam8_-"
+vertex_groups = PackedColorArray(0, 0, 1, 1, 0, 1, 0, 1)
+
+[node name="torso_pam9_+" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 240.0
+offset_top = 576.0
+offset_right = 336.0
+offset_bottom = 609.0
+text = "torso_pam9_+"
+vertex_groups = PackedColorArray(0, 0, 1, 1)
+
+[node name="torso_pam9_-" parent="morphs/Body" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = -0.663452
+offset_top = 575.0
+offset_right = 95.3365
+offset_bottom = 608.0
+text = "torso_pam9_-"
+vertex_groups = PackedColorArray(0, 0, 1, 1)
+
+[node name="Head" type="TabBar" parent="morphs"]
+visible = false
+layout_mode = 2
+
+[node name="african" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = -2.0
+offset_right = 90.0
+offset_bottom = 29.0
+text = "african"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1)
+
+[node name="asian" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 119.337
+offset_top = -2.0
+offset_right = 209.337
+offset_bottom = 29.0
+text = "asian"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1)
+
+[node name="caucasian" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = -2.0
+offset_right = 326.0
+offset_bottom = 29.0
+text = "caucasian"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="double_neck" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 58.0
+offset_right = 326.0
+offset_bottom = 89.0
+text = "double_neck"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1)
+
+[node name="head_young" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 119.0
+offset_top = 58.0
+offset_right = 215.0
+offset_bottom = 91.0
+text = "head_young"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="head_oval" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 28.0
+offset_right = 216.0
+offset_bottom = 61.0
+text = "head_oval"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1)
+
+[node name="head_circle" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 28.0
+offset_bottom = 61.0
+text = "head_circle"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1)
+
+[node name="head_quad" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.04
+offset_top = 28.0
+offset_right = 332.04
+offset_bottom = 61.0
+text = "head_quad"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1)
+
+[node name="head_inv_tris" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = -0.663452
+offset_top = 118.282
+offset_right = 95.3365
+offset_bottom = 151.282
+text = "head_inv_tris"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1)
+
+[node name="head_tris" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 235.337
+offset_top = 118.282
+offset_right = 331.337
+offset_bottom = 151.282
+text = "head_tris"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1)
+
+[node name="head_visok_+" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 235.337
+offset_top = 148.282
+offset_right = 331.337
+offset_bottom = 181.282
+text = "head_visok_+"
+vertex_groups = PackedColorArray(1, 0, 0, 1)
+
+[node name="head _visok_-" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = -0.663452
+offset_top = 148.282
+offset_right = 95.3365
+offset_bottom = 181.282
+text = "head _visok_-"
+vertex_groups = PackedColorArray(1, 0, 0, 1)
+
+[node name="neck_scale_XY" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = -0.663452
+offset_top = 58.0
+offset_right = 95.3365
+offset_bottom = 91.0
+text = "neck_scale_XY"
+vertex_groups = PackedColorArray(1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1)
+
+[node name="head_scale_X" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = -0.663452
+offset_top = 88.2823
+offset_right = 95.3365
+offset_bottom = 121.282
+text = "head_scale_X"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="head_scale_Y" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 118.337
+offset_top = 88.2823
+offset_right = 214.337
+offset_bottom = 121.282
+text = "head_scale_Y"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="head_scale_Z" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 235.337
+offset_top = 88.2823
+offset_right = 331.337
+offset_bottom = 121.282
+text = "head_scale_Z"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="head_pam1_+" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 235.337
+offset_top = 178.282
+offset_right = 331.337
+offset_bottom = 211.282
+text = "head_pam1_+"
+vertex_groups = PackedColorArray(1, 0, 0, 1)
+
+[node name="head_pam1_-" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = -0.663452
+offset_top = 178.282
+offset_right = 95.3365
+offset_bottom = 211.282
+text = "head_pam1_-"
+vertex_groups = PackedColorArray(1, 0, 0, 1)
+
+[node name="head_pam2_+" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 235.337
+offset_top = 207.282
+offset_right = 331.337
+offset_bottom = 240.282
+text = "head_pam2_+"
+vertex_groups = PackedColorArray(1, 0, 0, 1)
+
+[node name="head_pam_2_-" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = -0.663452
+offset_top = 208.282
+offset_right = 95.3365
+offset_bottom = 241.282
+text = "head_pam_2_-"
+vertex_groups = PackedColorArray(1, 0, 0, 1)
+
+[node name="head_pam_3_+" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 235.337
+offset_top = 238.282
+offset_right = 331.337
+offset_bottom = 271.282
+text = "head_pam_3_+"
+vertex_groups = PackedColorArray(1, 0, 0, 1)
+
+[node name="head_pam_3_-" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = -0.663452
+offset_top = 238.282
+offset_right = 95.3365
+offset_bottom = 271.282
+text = "head_pam_3_-"
+vertex_groups = PackedColorArray(1, 0, 0, 1)
+
+[node name="head_pam_4_+" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 235.337
+offset_top = 268.282
+offset_right = 331.337
+offset_bottom = 301.282
+text = "head_pam_4_+"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1)
+
+[node name="head_pam_4_-" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = -0.663452
+offset_top = 268.282
+offset_right = 95.3365
+offset_bottom = 301.282
+text = "head_pam_4_-"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1)
+
+[node name="head_pam_5_+" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 235.337
+offset_top = 298.282
+offset_right = 331.337
+offset_bottom = 331.282
+text = "head_pam_5_+"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1)
+
+[node name="head_pam_5_-" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = -0.663452
+offset_top = 298.282
+offset_right = 95.3365
+offset_bottom = 331.282
+text = "head_pam_5_-"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1)
+
+[node name="cheek_pam1_+" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 118.337
+offset_top = 148.282
+offset_right = 214.337
+offset_bottom = 181.282
+text = "cheek_pam1_+"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1)
+
+[node name="cheek_pam1_-" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 118.337
+offset_top = 179.282
+offset_right = 214.337
+offset_bottom = 212.282
+text = "cheek_pam1_-"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1)
+
+[node name="cheek_pam2_+" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 118.337
+offset_top = 208.282
+offset_right = 214.337
+offset_bottom = 241.282
+text = "cheek_pam2_+"
+vertex_groups = PackedColorArray(1, 0, 0, 1)
+
+[node name="cheek_pam3_+" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 118.337
+offset_top = 238.282
+offset_right = 214.337
+offset_bottom = 271.282
+text = "cheek_pam3_+"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 1, 0, 1, 1)
+
+[node name="cheek_pam4+" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 118.337
+offset_top = 268.282
+offset_right = 214.337
+offset_bottom = 301.282
+text = "cheek_pam4+"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="cheek_pam4_-" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 118.337
+offset_top = 298.282
+offset_right = 214.337
+offset_bottom = 331.282
+text = "cheek_pam4_-"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="jaw_pam1_+" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 235.337
+offset_top = 328.282
+offset_right = 331.337
+offset_bottom = 361.282
+text = "jaw_pam1_+"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1)
+
+[node name="jaw_pam3_+" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 235.337
+offset_top = 358.282
+offset_right = 331.337
+offset_bottom = 391.282
+text = "jaw_pam3_+"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1)
+
+[node name="jaw_pam1_-" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = -0.663452
+offset_top = 328.282
+offset_right = 95.3365
+offset_bottom = 361.282
+text = "jaw_pam1_-"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1)
+
+[node name="jaw_pam2" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 118.337
+offset_top = 358.282
+offset_right = 214.337
+offset_bottom = 391.282
+text = "jaw_pam2"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1)
+
+[node name="jaw_pam3_-" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = -0.663452
+offset_top = 358.282
+offset_right = 95.3365
+offset_bottom = 391.282
+text = "jaw_pam3_-"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1)
+
+[node name="jaw_pam4_+" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 235.337
+offset_top = 388.282
+offset_right = 331.337
+offset_bottom = 421.282
+text = "jaw_pam4_+"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1)
+
+[node name="jaw_pam4_-" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = -0.663452
+offset_top = 388.282
+offset_right = 95.3365
+offset_bottom = 421.282
+text = "jaw_pam4_-"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1)
+
+[node name="jaw_pam5_+" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 235.337
+offset_top = 418.282
+offset_right = 331.337
+offset_bottom = 451.282
+text = "jaw_pam5_+"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1)
+
+[node name="jaw_pam5_-" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = -0.663452
+offset_top = 418.282
+offset_right = 95.3365
+offset_bottom = 451.282
+text = "jaw_pam5_-"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1)
+
+[node name="jaw_pam6_+" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 235.337
+offset_top = 449.282
+offset_right = 331.337
+offset_bottom = 482.282
+text = "jaw_pam6_+"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1)
+
+[node name="jaw_pam6_-" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = -0.663452
+offset_top = 448.282
+offset_right = 95.3365
+offset_bottom = 481.282
+text = "jaw_pam6_-"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1)
+
+[node name="jaw_pam7_+" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 235.337
+offset_top = 478.282
+offset_right = 331.337
+offset_bottom = 511.282
+text = "jaw_pam7_+"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1)
+
+[node name="jaw_pam7_-" parent="morphs/Head" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = -0.663452
+offset_top = 478.282
+offset_right = 95.3365
+offset_bottom = 511.282
+text = "jaw_pam7_-"
+vertex_groups = PackedColorArray(1, 0, 0, 1, 0, 0, 0, 1)
+
+[node name="Face" type="TabBar" parent="morphs"]
+visible = false
+layout_mode = 2
+
+[node name="nose_scale_X" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = -2.0
+offset_bottom = 31.0
+text = "nose_scale_X"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="nose_scale_Y" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 119.0
+offset_top = -2.0
+offset_right = 215.0
+offset_bottom = 31.0
+text = "nose_scale_Y"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="nose_scale_Z" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = -2.0
+offset_right = 332.0
+offset_bottom = 31.0
+text = "nose_scale_Z"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="nose_move_Y_+" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 28.0
+offset_right = 336.0
+offset_bottom = 61.0
+text = "nose_move_Y_+"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="nose_move_Z_+" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 58.0
+offset_right = 337.0
+offset_bottom = 91.0
+text = "nose_move_Z_+"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="nose_move_Y_-" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 28.0
+offset_right = 100.0
+offset_bottom = 61.0
+text = "nose_move_Y_-"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="nose_move_Z_-" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 58.0
+offset_right = 100.0
+offset_bottom = 91.0
+text = "nose_move_Z_-"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="nose_scale_1_-" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 88.0
+offset_right = 100.0
+offset_bottom = 121.0
+text = "nose_scale_1_-"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="nose_scale_2_-" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 119.0
+offset_top = 88.0
+offset_right = 219.0
+offset_bottom = 121.0
+text = "nose_scale_2_-"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="nose_scale_3_-" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 88.0
+offset_right = 336.0
+offset_bottom = 121.0
+text = "nose_scale_3_-"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="nose_scale_1_+" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 118.0
+offset_right = 100.0
+offset_bottom = 151.0
+text = "nose_scale_1_+"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="nose_scale_2_+" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 119.0
+offset_top = 118.0
+offset_right = 219.0
+offset_bottom = 151.0
+text = "nose_scale_2_+"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="nose_scale_3_+" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 118.0
+offset_right = 336.0
+offset_bottom = 151.0
+text = "nose_scale_3_+"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="nose_pam1_-" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 149.0
+offset_right = 100.0
+offset_bottom = 182.0
+text = "nose_pam1_-"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="nose_pam1_+" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 178.0
+offset_right = 100.0
+offset_bottom = 211.0
+text = "nose_pam1_+"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="nose_pam2_-" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 119.0
+offset_top = 146.0
+offset_right = 219.0
+offset_bottom = 179.0
+text = "nose_pam2_-"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="nose_pam2_+" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 119.0
+offset_top = 177.0
+offset_right = 219.0
+offset_bottom = 210.0
+text = "nose_pam2_+"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="nose_pam3_-" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 146.0
+offset_right = 336.0
+offset_bottom = 179.0
+text = "nose_pam3_-"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="nose_pam3_+" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 177.0
+offset_right = 336.0
+offset_bottom = 210.0
+text = "nose_pam3_+"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="nose_pam4_+" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 208.0
+offset_right = 336.0
+offset_bottom = 241.0
+text = "nose_pam4_+"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1)
+
+[node name="nose_pam5" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 119.0
+offset_top = 208.0
+offset_right = 219.0
+offset_bottom = 241.0
+text = "nose_pam5"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="nose_pam4_-" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 208.0
+offset_right = 100.0
+offset_bottom = 241.0
+text = "nose_pam4_-"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="nose_pam6_+" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 119.0
+offset_top = 58.0
+offset_right = 219.0
+offset_bottom = 91.0
+text = "nose_pam6_+"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="nose_pam6_-" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 119.0
+offset_top = 28.0
+offset_right = 219.0
+offset_bottom = 61.0
+text = "nose_pam6_-"
+vertex_groups = PackedColorArray(1, 0, 1, 1, 1, 1, 1, 1)
+
+[node name="lips_scale_X_-" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 268.0
+offset_right = 100.0
+offset_bottom = 301.0
+text = "lips_scale_X_-"
+vertex_groups = PackedColorArray(0, 0, 0, 1)
+
+[node name="lips_scale_Y_-" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 119.0
+offset_top = 268.0
+offset_right = 219.0
+offset_bottom = 301.0
+text = "lips_scale_Y_-"
+vertex_groups = PackedColorArray(0, 0, 0, 1)
+
+[node name="lips_scale_Z_-" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 268.0
+offset_right = 336.0
+offset_bottom = 301.0
+text = "lips_scale_Z_-"
+vertex_groups = PackedColorArray(0, 0, 0, 1)
+
+[node name="lips_scale_X_+" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 298.0
+offset_right = 100.0
+offset_bottom = 331.0
+text = "lips_scale_X_+"
+vertex_groups = PackedColorArray(0, 0, 0, 1)
+
+[node name="lips_scale_Y_+" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 116.0
+offset_top = 298.0
+offset_right = 216.0
+offset_bottom = 331.0
+text = "lips_scale_Y_+"
+vertex_groups = PackedColorArray(0, 0, 0, 1, 1, 0, 1, 1)
+
+[node name="lips_scale_Z_+" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 298.0
+offset_right = 336.0
+offset_bottom = 331.0
+text = "lips_scale_Z_+"
+vertex_groups = PackedColorArray(0, 0, 0, 1)
+
+[node name="lips_move_Y_-" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 328.0
+offset_right = 100.0
+offset_bottom = 361.0
+text = "lips_move_Y_-"
+vertex_groups = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1)
+
+[node name="lips_move_Y_+" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 328.0
+offset_right = 336.0
+offset_bottom = 361.0
+text = "lips_move_Y_+"
+vertex_groups = PackedColorArray(0, 0, 0, 1, 1, 0, 1, 1)
+
+[node name="lips_move_Z_-" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 358.0
+offset_right = 100.0
+offset_bottom = 391.0
+text = "lips_move_Z_-"
+vertex_groups = PackedColorArray(0, 0, 0, 1)
+
+[node name="lips_move_Z_+" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 358.0
+offset_right = 336.0
+offset_bottom = 391.0
+text = "lips_move_Z_+"
+vertex_groups = PackedColorArray(0, 0, 0, 1, 1, 0, 1, 1)
+
+[node name="lips_pam1_+" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 389.0
+offset_right = 336.0
+offset_bottom = 422.0
+text = "lips_pam1_+"
+vertex_groups = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1)
+
+[node name="lips_pam2_+" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 418.0
+offset_right = 336.0
+offset_bottom = 451.0
+text = "lips_pam2_+"
+vertex_groups = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1)
+
+[node name="lips_pam3_+" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 449.0
+offset_right = 336.0
+offset_bottom = 482.0
+text = "lips_pam3_+"
+vertex_groups = PackedColorArray(0, 0, 0, 1)
+
+[node name="lips_pam4_+" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 479.0
+offset_right = 336.0
+offset_bottom = 512.0
+text = "lips_pam4_+"
+vertex_groups = PackedColorArray(0, 0, 0, 1)
+
+[node name="lips_pam5_+" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 508.0
+offset_right = 336.0
+offset_bottom = 541.0
+text = "lips_pam5_+"
+vertex_groups = PackedColorArray(0, 0, 0, 1)
+
+[node name="lips_pam1_-" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 388.0
+offset_right = 100.0
+offset_bottom = 421.0
+text = "lips_pam1_-"
+vertex_groups = PackedColorArray(0, 0, 0, 1)
+
+[node name="lips_pam2_-" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 419.0
+offset_right = 100.0
+offset_bottom = 452.0
+text = "lips_pam2_-"
+vertex_groups = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1)
+
+[node name="lips_pam3_-" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 449.0
+offset_right = 100.0
+offset_bottom = 482.0
+text = "lips_pam3_-"
+vertex_groups = PackedColorArray(0, 0, 0, 1)
+
+[node name="lips_pam4_-" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 479.0
+offset_right = 100.0
+offset_bottom = 512.0
+text = "lips_pam4_-"
+vertex_groups = PackedColorArray(0, 0, 0, 1)
+
+[node name="lips_pam5_-" parent="morphs/Face" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 508.0
+offset_right = 100.0
+offset_bottom = 541.0
+text = "lips_pam5_-"
+vertex_groups = PackedColorArray(0, 0, 0, 1)
+
+[node name="Eyes" type="TabBar" parent="morphs"]
+visible = false
+layout_mode = 2
+
+[node name="eye_pam2_-" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 29.0
+offset_bottom = 62.0
+text = "eye_pam2_-"
+vertex_groups = PackedColorArray(1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1)
+
+[node name="eye_pam2_+" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 28.0
+offset_right = 332.0
+offset_bottom = 61.0
+text = "eye_pam2_+"
+vertex_groups = PackedColorArray(1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1)
+
+[node name="eye_pam1" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 116.0
+offset_top = -2.0
+offset_right = 212.0
+offset_bottom = 31.0
+text = "eye_pam1"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam3_+" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = -2.0
+offset_right = 332.0
+offset_bottom = 31.0
+text = "eye_pam3_+"
+vertex_groups = PackedColorArray(1, 1, 1, 1, 1, 0, 1, 1)
+
+[node name="eye_pam4_-" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+text = "eye_pam4_-"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam5_+" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 58.0
+offset_right = 332.0
+offset_bottom = 91.0
+text = "eye_pam5_+"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam5_-" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 58.0
+offset_bottom = 91.0
+text = "eye_pam5_-"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam6_-" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 88.0
+offset_bottom = 121.0
+text = "eye_pam6_-"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam6_+" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 88.0
+offset_right = 332.0
+offset_bottom = 121.0
+text = "eye_pam6_+"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam_7_+" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 118.0
+offset_right = 332.0
+offset_bottom = 151.0
+text = "eye_pam_7_+"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam_7_-" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 118.0
+offset_bottom = 151.0
+text = "eye_pam_7_-"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam_8_+" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 148.0
+offset_right = 332.0
+offset_bottom = 181.0
+text = "eye_pam_8_+"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam_9_+" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 177.0
+offset_right = 332.0
+offset_bottom = 210.0
+text = "eye_pam_9_+"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam_8_-" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 149.0
+offset_bottom = 182.0
+text = "eye_pam_8_-"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam_9_-" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 177.0
+offset_bottom = 210.0
+text = "eye_pam_9_-"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam10_+" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 208.0
+offset_right = 332.0
+offset_bottom = 241.0
+text = "eye_pam10_+"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam10_-" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 208.0
+offset_bottom = 241.0
+text = "eye_pam10_-"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam11_+" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 238.0
+offset_right = 332.0
+offset_bottom = 271.0
+text = "eye_pam11_+"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam11_-" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 238.0
+offset_bottom = 271.0
+text = "eye_pam11_-"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam12_+" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 268.0
+offset_right = 332.0
+offset_bottom = 301.0
+text = "eye_pam12_+"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam12_-" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 268.0
+offset_bottom = 301.0
+text = "eye_pam12_-"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam13_+" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 298.0
+offset_right = 332.0
+offset_bottom = 331.0
+text = "eye_pam13_+"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam13_-" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 298.0
+offset_bottom = 331.0
+text = "eye_pam13_-"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam14_+" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 328.0
+offset_right = 332.0
+offset_bottom = 361.0
+text = "eye_pam14_+"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam14_-" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 328.0
+offset_bottom = 361.0
+text = "eye_pam14_-"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam15_+" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 358.0
+offset_right = 332.0
+offset_bottom = 391.0
+text = "eye_pam15_+"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[node name="eye_pam15_-" parent="morphs/Eyes" instance=ExtResource("2")]
+layout_mode = 0
+offset_top = 358.0
+offset_bottom = 391.0
+text = "eye_pam15_-"
+vertex_groups = PackedColorArray(1, 1, 1, 1)
+
+[connection signal="file_selected" from="save_file" to="." method="_on_save_file_file_selected"]
+[connection signal="file_selected" from="open_file" to="." method="_on_open_file_file_selected"]
+[connection signal="pressed" from="print" to="." method="_on_print_pressed"]
+[connection signal="pressed" from="random_gen" to="." method="_on_random_gen_pressed"]
+[connection signal="value_changed" from="random_gen/Label/HSlider" to="." method="set_cartoonish"]
+[connection signal="pressed" from="reset_view" to="cam" method="_on_reset_view_pressed"]
+[connection signal="pressed" from="Top_Buttons/save" to="." method="_on_save_pressed"]
+[connection signal="pressed" from="Top_Buttons/open" to="." method="_on_open_pressed"]
+[connection signal="pressed" from="Top_Buttons/back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Top_Buttons/start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="morphs/Name/VBox/Name_HBox/Random" to="." method="random_name"]
+[connection signal="item_selected" from="morphs/Name/VBox/OptionButton" to="." method="gender_changed"]

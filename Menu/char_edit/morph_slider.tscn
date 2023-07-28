@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=3 uid="uid://gsy4ynu3bp2e"]
+
+[sub_resource type="GDScript" id="1"]
+script/source = "extends Label
+signal change_morph(text,value)
+@export var vertex_groups = PackedColorArray()
+
+func _on_HSlider_value_changed(value):
+	emit_signal(\"change_morph\",text,value)
+
+func set_slider(value):
+	$HSlider.value = value
+
+func update():
+	emit_signal(\"change_morph\",text,$HSlider.value)
+	
+"
+
+[node name="Label" type="Label"]
+offset_right = 96.0
+offset_bottom = 33.0
+text = "fat
+"
+script = SubResource("1")
+
+[node name="HSlider" type="HSlider" parent="."]
+layout_mode = 0
+offset_top = 18.0
+offset_right = 97.0
+offset_bottom = 34.0
+max_value = 1.0
+step = 0.01
+ticks_on_borders = true
+
+[connection signal="value_changed" from="HSlider" to="." method="_on_HSlider_value_changed"]
