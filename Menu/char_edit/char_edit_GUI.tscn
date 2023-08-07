@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bpxo1c1cownri"]
 
-[ext_resource type="Texture2D" uid="uid://dfnnsfa8jcvwd" path="res://Asset/Image/Icon/reset.png" id="1_i2og7"]
+[ext_resource type="Texture2D" uid="uid://v8aqyfeiaac5" path="res://Asset/Image/Icon/reset.png" id="1_i2og7"]
 [ext_resource type="PackedScene" uid="uid://gsy4ynu3bp2e" path="res://Menu/char_edit/morph_slider.tscn" id="2"]
 
 [sub_resource type="GDScript" id="1"]
@@ -77,7 +77,7 @@ func set_male():
 	take_on_clothes(\"male_shirt_01\")
 	take_on_clothes(\"male_jeans_01\")
 	change_morph(\"man\",1)
-	change_morph(\"woman\",0)
+	change_morph(\"woman1\",0)
 	$morphs/Body/breast1.hide()
 	change_morph(\"breast1\",0)
 	$morphs/Body/breast2.hide()
@@ -102,7 +102,7 @@ func set_female():
 	take_off_clothes(\"male_shirt_01\")
 	take_off_clothes(\"male_jeans_01\")
 	change_morph(\"man\",0)
-	change_morph(\"woman\",1)
+	change_morph(\"woman1\",1)
 	$morphs/Body/breast1.show()
 	$morphs/Body/breast1.update()
 	$morphs/Body/breast2.show()
