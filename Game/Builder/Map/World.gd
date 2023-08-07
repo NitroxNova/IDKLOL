@@ -10,12 +10,12 @@ func build():
 	pier_builder.connect("create_entity",emit_create_entity)
 	pier_builder.position = Vector2(-30,0)
 	pier_builder.render()
-	
+
 	var town_builder = Town_Builder.new(50,50)
 	town_builder.connect("create_entity",emit_create_entity)
 	town_builder.render()
 	starting_position = town_builder.get_starting_position()
-#
+
 	var forest_builder = Forest_Builder.new()
 	forest_builder.connect("create_entity",emit_create_entity)
 	forest_builder.set_size(40,50)

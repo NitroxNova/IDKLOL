@@ -1,10 +1,11 @@
 extends Resource
 class_name Map_Builder
 
-enum TILE_TYPE {none, grass, shallow_water, deep_water, pier, wall, gravel,road, wood_floor, door,building,tree}
+enum TILE_TYPE {none, grass, shallow_water, deep_water, pier, wall, gravel,road, wood_floor, door,building,tree,chair}
 var solid_tile_types = [TILE_TYPE.wall,TILE_TYPE.tree]
 var size : Vector2
 var tiles = []
+var spawns = {} #list of entities to be spawned, so we dont spawn them on top of each other
 var state : State
 var position : Vector2
 var starting_position : Vector3
@@ -13,6 +14,9 @@ var theme = {}
 var astar
 
 signal create_entity
+
+func get_area_size():
+	return size.x * size.y
 
 func set_size(width,h,tile=TILE_TYPE.none):
 	size = Vector2(width,h)
@@ -63,43 +67,44 @@ func render():
 				var data = {}
 				data.needs_render = true
 				data.position = Vector3(x,0,y)
-				if tile == TILE_TYPE.grass:
-					data.renderable = Renderable.GROUND
-					data.material = Material_3D.GRASS
-					data.name = "Grass"
-				elif tile == TILE_TYPE.gravel:
-					data.renderable = Renderable.GROUND
-					data.material = Material_3D.GRAVEL
-					data.name = "Gravel"
-				elif tile == TILE_TYPE.road:
-					data.renderable = Renderable.GROUND
-					data.material = Material_3D.ROAD
-					data.name = "Road"
-				elif tile == TILE_TYPE.shallow_water:
-					data.renderable = Renderable.SHALLOW_WATER
-					data.name = "Shallow Water"
-					data.position.y = -.33
-				elif tile == TILE_TYPE.deep_water:
-					data.renderable = Renderable.DEEP_WATER
-					data.name = "Deep Water"
-					data.position.y = -.33
-				elif tile == TILE_TYPE.wood_floor:
-					data.renderable = Renderable.FLOOR
-					data.material = Material_3D.WOOD
-				elif tile == TILE_TYPE.door:
-					data.renderable = Renderable.FLOOR
-					data.material = Material_3D.WOOD
-				elif tile == TILE_TYPE.wall:
-					data.renderable = Renderable.WALL
-				elif tile == TILE_TYPE.tree:
-					data.renderable = Renderable.TREE
-					data.rotation = Vector3(0,randf_range(0,2*PI),0)
-					data.scale = Vector3(1,1,1) * randf_range(.5,2)
-					var g_data = {}
-					g_data.renderable = Renderable.GROUND
-					g_data.material = Material_3D.GRASS
-					g_data.name = "Grass"
-					g_data.needs_render = true
-					g_data.position = Vector3(x,0,y)
-					emit_signal("create_entity",g_data)
+				match tile:
+					TILE_TYPE.grass:
+						data.renderable = Renderable.GROUND
+						data.material = Material_3D.GRASS
+						data.name = "Grass"
+					TILE_TYPE.gravel:
+						data.renderable = Renderable.GROUND
+						data.material = Material_3D.GRAVEL
+						data.name = "Gravel"
+					TILE_TYPE.road:
+						data.renderable = Renderable.GROUND
+						data.material = Material_3D.ROAD
+						data.name = "Road"
+					TILE_TYPE.shallow_water:
+						data.renderable = Renderable.SHALLOW_WATER
+						data.name = "Shallow Water"
+						data.position.y = -.33
+					TILE_TYPE.deep_water:
+						data.renderable = Renderable.DEEP_WATER
+						data.name = "Deep Water"
+						data.position.y = -.33
+					TILE_TYPE.wood_floor:
+						data.renderable = Renderable.FLOOR
+						data.material = Material_3D.WOOD
+					TILE_TYPE.door:
+						data.renderable = Renderable.FLOOR
+						data.material = Material_3D.WOOD
+					TILE_TYPE.wall:
+						data.renderable = Renderable.WALL
+					TILE_TYPE.tree:
+						data.renderable = Renderable.TREE
+						data.rotation = Vector3(0,randf_range(0,2*PI),0)
+						data.scale = Vector3(1,1,1) * randf_range(.5,2)
+						var g_data = {}
+						g_data.renderable = Renderable.GROUND
+						g_data.material = Material_3D.GRASS
+						g_data.name = "Grass"
+						g_data.needs_render = true
+						g_data.position = Vector3(x,0,y)
+						emit_signal("create_entity",g_data)
 				emit_signal("create_entity",data)

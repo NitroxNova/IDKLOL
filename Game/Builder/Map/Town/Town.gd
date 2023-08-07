@@ -1,8 +1,11 @@
 extends Map_Builder
 class_name Town_Builder
 
+
+var min_build_size = 5
+var max_build_size = 12
 var available_tiles = []
-var total_buildings = 15
+var total_buildings = 12
 var buildings = []
 var wall_gap_y
 var doors = []
@@ -14,7 +17,7 @@ func _init(width,height):
 	make_buildings()
 	add_doors()
 	add_paths()
-#	render()
+#	render()    #call render from mapbuilder, so can connect to "create entity" signal first
 
 func emit_create_entity(data):
 	emit_signal("create_entity",data)
@@ -34,45 +37,46 @@ func town_walls():
 				
 func make_buildings():
 	buildings = []
-	var n_buildings = 0
-	while n_buildings < total_buildings:
-		var bx = randi_range(0, size.x-1) 
-		var by = randi_range(0, size.y-1)
-		var building = Town_Building.new(bx,by)
+	while buildings.size() < total_buildings:
+		var b = Town_Building.new(add_building_dimensions())
+		b.connect("create_entity",emit_create_entity)
+		buildings.append(b)
+	#sort by size, largest to smallest	
+	buildings.sort_custom(compare_buildings)
+	
+	buildings[0].type = Spawn.TOWN_PUB
+	buildings[1].type = Spawn.TOWN_TEMPLE
+	buildings[2].type = Spawn.TOWN_BLACKSMITH
+	
+	for b in buildings:
+		b.build()
+		
+	
+func compare_buildings(a:Town_Building,b:Town_Building):
+	if a.get_area_size() > b.get_area_size():
+		return true
+	return false
+		
+func add_building_dimensions():
+	while true: #will exit when a building is returned
+		var b_size = Vector2(randi_range(min_build_size,max_build_size),randi_range(min_build_size,max_build_size))
+		var b_pos = Vector2(randi_range(0, size.x-b_size.x),randi_range(0, size.y-b_size.y))
+
+	#	var building = Town_Structure.new(bx,by)
 		var possible = true
-		for y in range(by,by+building.size.y):
-			for x in range(bx,bx+building.size.x):
-				if x < 0 || x > size.x-1 || y < 0 || y > size.y-1:
+		for y in range(b_pos.y,b_pos.y+b_size.y):
+			for x in range(b_pos.x,b_pos.x+b_size.x):
+				if not Vector2(x,y) in available_tiles:
 					possible = false
-				else:
-					if not Vector2(x,y) in available_tiles:
-						possible = false
 		if possible:
-			n_buildings += 1
-			building.connect("create_entity",emit_create_entity)
-			buildings.append(building)
-#			building.create_entity.connect(state.ECS.create_entity)
-			for tile in building.occupied_tiles():
-				available_tiles.erase(tile)
-			for tile in building.built_tiles():
-				tiles[tile.x][tile.y] = TILE_TYPE.building
-#	// Outline buildings
-	var map_clone = tiles.duplicate(true)
-	for y in range(2,size.y-2):
-		for x in range(31,size.x-2):
-			if tiles[x][y] == TILE_TYPE.wood_floor:
-				var neighbors = 0
-				if not tiles[x+1][y] == TILE_TYPE.wood_floor:
-					neighbors += 1
-				if not tiles[x-1][y] == TILE_TYPE.wood_floor:
-					neighbors += 1
-				if not tiles[x][y+1] == TILE_TYPE.wood_floor:
-					neighbors += 1
-				if not tiles[x][y-1] == TILE_TYPE.wood_floor:
-					neighbors += 1
-				if neighbors > 0:
-					map_clone[x][y] = TILE_TYPE.wall
-	tiles = map_clone
+			var building = Rect2(b_pos,b_size)
+			for y in range(b_pos.y-1,b_pos.y+b_size.y+1):
+				for x in range(b_pos.x-1,b_pos.x+b_size.x+1):
+					available_tiles.erase(Vector2(x,y))
+			for y in range(b_pos.y,b_pos.y+b_size.y):
+				for x in range(b_pos.x,b_pos.x+b_size.x):
+					tiles[x][y] = TILE_TYPE.building
+			return building
 
 func add_doors():
 	doors = []
@@ -126,11 +130,14 @@ func add_paths():
 			
 		
 func get_starting_position():
-	var x = 70
-	x = 10
-	var z = wall_gap_y
-	return Vector3(x,0,z) + Vector3(position.x,0,position.y)
-#	return Vector3(size.x/2,0,size.y/2)
+#	var x = 70
+#	x = 10
+#	var z = wall_gap_y
+#	return Vector3(x,0,z) + Vector3(position.x,0,position.y)
+	#start the player at the pub
+	var pub_center = buildings[0].get_center()
+	starting_position = Vector3(pub_center.x,0,pub_center.y)
+	return starting_position
 	
 func render():
 	for building in buildings:

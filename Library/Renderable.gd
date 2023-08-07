@@ -1,13 +1,18 @@
 extends Resource
 class_name Renderable
 
-enum {ORC, GOBLIN, HUMAN, WALL, FLOOR, CEILING, ROOF, GROUND, SHALLOW_WATER, DEEP_WATER, TREE, STONE_WALL_TOP, STONE_WALL_ENTRANCE}
+enum {BARREL,CANDELABRUM, CEILING, CHAIR, FLOOR, GOBLIN, HANGING_SIGN, HUMAN, ORC, TABLE, ROOF, WALL, GROUND, SHALLOW_WATER, DEEP_WATER, TREE, STONE_WALL_TOP, STONE_WALL_ENTRANCE}
 const scene_list = {
-	FLOOR:preload("res://Entity/Structure/Floor.tscn"),
+	BARREL:preload("res://Entity/Furniture/Barrel/barrel.tscn"),
+	CANDELABRUM:preload("res://Entity/Furniture/Candelabrum/entity.tscn"),
 	CEILING:preload("res://Entity/Structure/Ceiling.tscn"),
-	ROOF:preload("res://Entity/Structure/roof.tscn"),
+	CHAIR:preload("res://Entity/Furniture/Chair/chair.tscn"),
+	FLOOR:preload("res://Entity/Structure/Floor.tscn"),
 	GROUND:preload("res://Entity/Terrain/ground.tscn"),
+	HANGING_SIGN:preload("res://Entity/Structure/Hanging_Sign/hanging_sign.tscn"),
 	HUMAN: preload("res://Entity/Creature/Human/Entity.tscn"),
+	ROOF:preload("res://Entity/Structure/roof.tscn"),
+	TABLE:preload("res://Entity/Furniture/Table/table.tscn"),
 	WALL: preload("res://Entity/Structure/Wall.tscn"),
 	SHALLOW_WATER: preload("res://Entity/Terrain/shallow_water.tscn"),
 	DEEP_WATER: preload( "res://Entity/Terrain/deep_water.tscn"),

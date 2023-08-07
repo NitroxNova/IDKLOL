@@ -1,20 +1,42 @@
 extends Map_Builder
 class_name Town_Building
 
-var min_size = 5
-var max_size = 12
 #var direction
 var door : Vector2
+var type = Spawn.TOWN_BUILDING
 
-func _init(x,y):
-	position = Vector2(x,y)
-	var length = randi_range(min_size, max_size)
-	var width = randi_range(min_size, max_size)
-	size = Vector2(length,width)
+func _init(dimensions:Rect2):
+	position = dimensions.position
+	size = dimensions.size
+
+func build():
+#	print("building pub")
+	var player_pos = Vector3(get_center().x,0,get_center().y)
+	spawns[player_pos] = "path"
+	var blueprint = Spawn.get_data(type)
+	for s in blueprint.spawn_list:
+		var spawn = random_spawn(s)
 
 func get_center():
 	return position + (size / 2)
 
+func random_spawn(spawn_id):
+	var entity = Spawn.get_data(spawn_id)
+	var pos = random_interior_position()
+	while pos in spawns:
+		pos = random_interior_position()
+	entity.position = pos
+	entity.rotation = Vector3.ZERO
+	entity.rotation.y = randf_range(0,2*PI)
+	spawns[pos] = entity
+	return entity
+	
+func random_interior_position():
+	var pos = Vector3.ZERO
+	pos.x = randi_range(position.x+1,position.x+size.x-2)
+	pos.z = randi_range(position.y+1,position.y+size.y-2)
+	return pos
+	
 func occupied_tiles():
 	var oc_tiles = []
 	for rel_x in size.x+2:
@@ -43,7 +65,7 @@ func render():
 			data.position = Vector3(x,0,y)
 			data.renderable = Renderable.FLOOR
 			data.material = Material_3D.WOOD
-			emit_signal("create_entity",data)
+			create_entity.emit(data)
 	
 	for rel_x in size.x:
 		render_wall(rel_x,0)
@@ -52,6 +74,10 @@ func render():
 		render_wall(0,rel_y)
 		render_wall(size.x-1,rel_y)
 	render_roof()
+	
+	for e in spawns.values():
+		if e is Dictionary:
+			create_entity.emit(e)
 		
 func render_wall(rel_x,rel_y):
 	if not Vector2(rel_x,rel_y) == door:
