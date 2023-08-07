@@ -22,12 +22,12 @@ func generate_mesh(mesh_inst):
 	save_mesh(mesh_inst,vertex_arr)
 
 func generate_all_meshs():
-	print(appearance)
+#	print(appearance)
 	var time= Time.get_ticks_msec ( )
 	var meshs =$skeleton.get_children()
 	for mesh_inst in meshs:
 		generate_mesh(mesh_inst)
-	print (Time.get_ticks_msec ( )-time)
+#	print (Time.get_ticks_msec ( )-time)
 	
 func reset_mesh(mesh_inst):
 	save_mesh(mesh_inst,char_edit_global.meshs_shapes[mesh_inst.name][\"base_form\"])

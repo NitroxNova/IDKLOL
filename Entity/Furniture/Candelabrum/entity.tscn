@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://com47esvsd3b3"]
+
+[ext_resource type="Script" path="res://Entity/Entity.gd" id="1_wiof6"]
+[ext_resource type="PackedScene" uid="uid://df668h8jk63vf" path="res://Entity/Furniture/Candelabrum/Candelabrum_tall.blend" id="2_rytuq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8p218"]
+size = Vector3(0.75, 2, 0.75)
+
+[node name="Candelabrum" type="StaticBody3D"]
+script = ExtResource("1_wiof6")
+
+[node name="Candelabrum_tall" parent="." instance=ExtResource("2_rytuq")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.924445, 0)
+shape = SubResource("BoxShape3D_8p218")
