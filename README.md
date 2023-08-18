@@ -8,7 +8,10 @@ GoMakeHumanDot - https://github.com/Lexpartizan/Go_MakeHuman_dot
 MakeHuman - http://www.makehumancommunity.org/  
   
 materials:  
-https://ambientcg.com/list  
+https://ambientcg.com/list 
+
+icons:  
+-https://thenounproject.com/search/icons/  
   
 3D models:  
 https://quaternius.com/  
