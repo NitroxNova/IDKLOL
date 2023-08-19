@@ -9,9 +9,6 @@ MakeHuman - http://www.makehumancommunity.org/
   
 materials:  
 https://ambientcg.com/list 
-
-icons:  
--https://thenounproject.com/search/icons/  
   
 3D models:  
 https://quaternius.com/  
@@ -23,4 +20,8 @@ https://opengameart.org/
 -- adventurer - https://opengameart.org/content/adventurer-militia-peasant-low-poly  
 -- goblin - https://opengameart.org/content/dungeon-pack-1  
 -- orc - https://opengameart.org/content/orc-3d  
-
+  
+icons:  
+https://thenounproject.com/search/icons/  
+-- beer - https://thenounproject.com/icon/beer-3767620/  
+-- anvil - https://thenounproject.com/icon/blacksmith-4282063/
