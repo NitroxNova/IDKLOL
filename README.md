@@ -25,4 +25,5 @@ icons:
 https://thenounproject.com/search/icons/  
 -- beer - https://thenounproject.com/icon/beer-3767620/  
 -- anvil - https://thenounproject.com/icon/blacksmith-4282063/  
--- sun - https://thenounproject.com/icon/sun-1585138/
+-- sun - https://thenounproject.com/icon/sun-1585138/  
+-- alchemist - https://thenounproject.com/icon/chemistry-3344486/
