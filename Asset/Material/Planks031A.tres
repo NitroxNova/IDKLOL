@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://4pmxe5lfhxgb"]
+
+[ext_resource type="Texture2D" uid="uid://lidug4nwbk0r" path="res://Asset/Material/Planks031A_1K-JPG/Planks031A_1K_Color.jpg" id="1_58hl6"]
+
+[resource]
+albedo_texture = ExtResource("1_58hl6")
+uv1_triplanar = true
