@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://dwodqcrgxk0hq"]
+
+[ext_resource type="PackedScene" uid="uid://breps20pqxxux" path="res://Entity/Furniture/Bed/single_bed.blend" id="1_22ft3"]
+
+[sub_resource type="GDScript" id="GDScript_1p8bw"]
+script/source = "extends Entity
+"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pigxx"]
+size = Vector3(0.7, 0.5, 1)
+
+[node name="Single_Bed" type="StaticBody3D"]
+script = SubResource("GDScript_1p8bw")
+
+[node name="single_bed" parent="." instance=ExtResource("1_22ft3")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.344905, 0)
+shape = SubResource("BoxShape3D_pigxx")

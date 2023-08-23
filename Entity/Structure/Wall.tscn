@@ -1,19 +1,25 @@
 [gd_scene load_steps=4 format=3 uid="uid://cbyem0hiodeah"]
 
-[ext_resource type="Script" path="res://Entity/Entity.gd" id="1_djtox"]
 [ext_resource type="Material" uid="uid://bcl6fr05w55ul" path="res://Asset/Material/Bricks012.tres" id="2_sqrtp"]
+
+[sub_resource type="GDScript" id="GDScript_2qowc"]
+script/source = "extends Entity
+
+func set_material(material):
+	$CSGBox3D.material = Material_3D.get_material(material)
+"
 
 [sub_resource type="BoxShape3D" id="2"]
 size = Vector3(1, 5, 1)
 
 [node name="Wall" type="StaticBody3D"]
 disable_mode = 1
-script = ExtResource("1_djtox")
+script = SubResource("GDScript_2qowc")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-material_override = ExtResource("2_sqrtp")
 size = Vector3(1, 5, 1)
+material = ExtResource("2_sqrtp")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)

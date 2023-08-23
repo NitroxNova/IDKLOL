@@ -1,14 +1,20 @@
 [gd_scene load_steps=4 format=3 uid="uid://cvuuax6o6m5oq"]
 
-[ext_resource type="Script" path="res://Entity/Entity.gd" id="1_p0inw"]
 [ext_resource type="Material" uid="uid://cjysaqwx0b0vj" path="res://Asset/Material/PavingStones037.tres" id="2_migwe"]
+
+[sub_resource type="GDScript" id="GDScript_638rj"]
+script/source = "extends Entity
+
+func set_material(material):
+	$Mesh.material = Material_3D.get_material(material)
+"
 
 [sub_resource type="BoxShape3D" id="2"]
 size = Vector3(1, 0.2, 1)
 
 [node name="Entity" type="StaticBody3D"]
 disable_mode = 1
-script = ExtResource("1_p0inw")
+script = SubResource("GDScript_638rj")
 
 [node name="Mesh" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
