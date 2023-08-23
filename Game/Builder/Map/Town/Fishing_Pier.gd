@@ -21,6 +21,6 @@ func render():
 		data.needs_render = true
 		data.position = Vector3(pier.x,0,pier.y) + Vector3(position.x,0,position.y)
 		data.renderable = Renderable.FLOOR
-		data.material = Material_3D.WOOD
+		data.material = Material_3D.DARK_PLANKS
 		emit_signal("create_entity",data)
 		

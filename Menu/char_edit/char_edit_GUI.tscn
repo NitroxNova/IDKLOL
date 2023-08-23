@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bpxo1c1cownri"]
 
-[ext_resource type="Texture2D" uid="uid://v8aqyfeiaac5" path="res://Asset/Image/Icon/reset.png" id="1_i2og7"]
+[ext_resource type="Texture2D" uid="uid://w3dsq0ny6krx" path="res://Asset/Image/Icon/reset.png" id="1_i2og7"]
 [ext_resource type="PackedScene" uid="uid://gsy4ynu3bp2e" path="res://Menu/char_edit/morph_slider.tscn" id="2"]
 
 [sub_resource type="GDScript" id="1"]

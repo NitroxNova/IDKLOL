@@ -90,10 +90,10 @@ func render():
 						data.position.y = -.33
 					TILE_TYPE.wood_floor:
 						data.renderable = Renderable.FLOOR
-						data.material = Material_3D.WOOD
+						data.material = Material_3D.DARK_PLANKS
 					TILE_TYPE.door:
 						data.renderable = Renderable.FLOOR
-						data.material = Material_3D.WOOD
+						data.material = Material_3D.DARK_PLANKS
 					TILE_TYPE.wall:
 						data.renderable = Renderable.WALL
 					TILE_TYPE.tree:

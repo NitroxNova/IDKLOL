@@ -1,9 +1,10 @@
 extends Map_Builder
 class_name Town_Building
 
-#var direction
+var direction # north or south
 var door : Vector2
 var type = Spawn.TOWN_BUILDING
+var blueprint = {}
 
 func _init(dimensions:Rect2):
 	position = dimensions.position
@@ -13,9 +14,28 @@ func build():
 #	print("building pub")
 	var player_pos = Vector3(get_center().x,0,get_center().y)
 	spawns[player_pos] = "path"
-	var blueprint = Spawn.get_data(type)
+	blueprint = Spawn.get_data(type)
 	for s in blueprint.spawn_list:
 		var spawn = random_spawn(s)
+	if "icon" in blueprint:
+		make_sign(blueprint.icon)
+
+func make_sign(texture):
+#	print("make sign " + texture)
+	print(direction)
+	var sign = Spawn.get_data(Spawn.HANGING_SIGN)
+	sign.material = texture
+	sign.position = Vector3.ZERO
+	sign.position.x = get_center().x - .5
+	sign.position.y = 2.8
+	sign.rotation = Vector3.ZERO
+	if direction == "north":
+		sign.position.z = position.y - 1.5
+		sign.rotation.y = PI/2
+	elif direction == "south":
+		sign.position.z = position.y + size.y + .5
+		sign.rotation.y = -PI/2
+	spawns[sign.position] = sign
 
 func get_center():
 	return position + (size / 2)
@@ -64,7 +84,7 @@ func render():
 			data.needs_render = true
 			data.position = Vector3(x,0,y)
 			data.renderable = Renderable.FLOOR
-			data.material = Material_3D.WOOD
+			data.material = Material_3D.DARK_PLANKS
 			create_entity.emit(data)
 	
 	for rel_x in size.x:
@@ -87,6 +107,7 @@ func render_wall(rel_x,rel_y):
 		data.needs_render = true
 		data.position = Vector3(x,0,y)
 		data.renderable = Renderable.WALL
+		data.material = blueprint.material[0]
 		emit_signal("create_entity",data)
 
 func render_roof():
@@ -98,11 +119,13 @@ func render_roof():
 	data.position.y = 3.0
 	data.position.z = position.y + (size.y/2.0) -0.5
 	data.scale = Vector3(size.x,3,size.y)
+	data.material = blueprint.material
 	data.name = "Roof"
 	emit_signal("create_entity",data)
 	
 	
 func add_door(side:String):
+	direction = side
 	var x = randi_range(1,size.x-2)
 	var y
 	if side == "north":

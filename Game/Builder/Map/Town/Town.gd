@@ -2,7 +2,7 @@ extends Map_Builder
 class_name Town_Builder
 
 
-var min_build_size = 5
+var min_build_size = 6
 var max_build_size = 12
 var available_tiles = []
 var total_buildings = 12
@@ -17,6 +17,8 @@ func _init(width,height):
 	make_buildings()
 	add_doors()
 	add_paths()
+	for b in buildings:
+		b.build()
 #	render()    #call render from mapbuilder, so can connect to "create entity" signal first
 
 func emit_create_entity(data):
@@ -47,9 +49,12 @@ func make_buildings():
 	buildings[0].type = Spawn.TOWN_PUB
 	buildings[1].type = Spawn.TOWN_TEMPLE
 	buildings[2].type = Spawn.TOWN_BLACKSMITH
+	buildings[3].type = Spawn.TOWN_ALCHEMIST
+	buildings[4].type = Spawn.TOWN_CLOTHIER
 	
-	for b in buildings:
-		b.build()
+	buildings[6].type = Spawn.TOWN_HOVEL
+	buildings[7].type = Spawn.TOWN_HOVEL
+	buildings[8].type = Spawn.TOWN_HOVEL
 		
 	
 func compare_buildings(a:Town_Building,b:Town_Building):
