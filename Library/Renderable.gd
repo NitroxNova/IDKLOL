@@ -1,7 +1,7 @@
 extends Resource
 class_name Renderable
 
-enum {BARREL,CANDELABRUM, CEILING, CHAIR, FLOOR, GOBLIN, HANGING_SIGN, HUMAN, ORC, TABLE, ROOF, WALL, GROUND, SHALLOW_WATER, DEEP_WATER, TREE, STONE_WALL_TOP, STONE_WALL_ENTRANCE}
+enum {BARREL,CANDELABRUM, CEILING, CHAIR, FLOOR, GOBLIN, HANGING_SIGN, HUMAN, ORC, SINGLE_BED, TABLE, ROOF, WALL, GROUND, SHALLOW_WATER, DEEP_WATER, TREE, STONE_WALL_TOP, STONE_WALL_ENTRANCE}
 const scene_list = {
 	BARREL:preload("res://Entity/Furniture/Barrel/barrel.tscn"),
 	CANDELABRUM:preload("res://Entity/Furniture/Candelabrum/entity.tscn"),
@@ -12,6 +12,7 @@ const scene_list = {
 	HANGING_SIGN:preload("res://Entity/Structure/Hanging_Sign/hanging_sign.tscn"),
 	HUMAN: preload("res://Entity/Creature/Human/Entity.tscn"),
 	ROOF:preload("res://Entity/Structure/roof.tscn"),
+	SINGLE_BED:preload("res://Entity/Furniture/Bed/single_bed.tscn"),
 	TABLE:preload("res://Entity/Furniture/Table/table.tscn"),
 	WALL: preload("res://Entity/Structure/Wall.tscn"),
 	SHALLOW_WATER: preload("res://Entity/Terrain/shallow_water.tscn"),
