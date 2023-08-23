@@ -34,7 +34,7 @@ static func render(delta:float, ECS:Entity_Component_System):
 			v_node.set_radius(entity.viewshed)
 			node.add_child(v_node)
 		if "material" in entity:
-			node.get_node("Mesh").material = Material_3D.get_material(entity.material)
+			node.set_material(entity.material)
 		node.connect("body_entered",Callable(Collision_System,"body_entered").bind(node,ECS))
 		ECS.remove_component(e_id,"position")
 		if "clothes" in entity:
