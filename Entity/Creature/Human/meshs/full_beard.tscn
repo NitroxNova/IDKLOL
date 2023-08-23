@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://06kwsdvi6c88"]
+
+[ext_resource type="ArrayMesh" path="res://Entity/Creature/Human/meshs/full_beard.mesh" id="1_gnry4"]
+[ext_resource type="Texture2D" uid="uid://bikoa8j8np2fb" path="res://Entity/Creature/Human/meshs/mats/Full_beard_black_diff.png" id="2_hwxf0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jis6w"]
+transparency = 1
+cull_mode = 2
+albedo_texture = ExtResource("2_hwxf0")
+
+[node name="full_beard" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.02)
+mesh = ExtResource("1_gnry4")
+surface_material_override/0 = SubResource("StandardMaterial3D_jis6w")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://w637d8t8cedx"]
 
-[ext_resource type="ArrayMesh" path="res://Entity/Creature/Human/meshs/male_shirt_01.mesh" id="1"]
+[ext_resource type="ArrayMesh" uid="uid://buvkl8h36qupp" path="res://Entity/Creature/Human/meshs/male_shirt_01.mesh" id="1"]
 [ext_resource type="Material" uid="uid://d112oxrf0v1s5" path="res://Entity/Creature/Human/meshs/mats/male_jeans_shirt_01.tres" id="2"]
 
 [node name="male_shirt_01" type="MeshInstance3D"]

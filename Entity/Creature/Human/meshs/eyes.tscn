@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://ds8e4s03q3e1m"]
 
-[ext_resource type="ArrayMesh" path="res://Entity/Creature/Human/meshs/eyes.mesh" id="1"]
+[ext_resource type="ArrayMesh" uid="uid://ddyaekmky4dbq" path="res://Entity/Creature/Human/meshs/eyes.mesh" id="1"]
 [ext_resource type="Material" uid="uid://cmv0f2ikvuo2t" path="res://Entity/Creature/Human/meshs/mats/eyes.tres" id="3"]
 
 [node name="eyes" type="MeshInstance3D"]

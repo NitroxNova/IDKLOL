@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dmps4mw7wv1n7"]
 
-[ext_resource type="ArrayMesh" path="res://Entity/Creature/Human/meshs/dress_mini_03.mesh" id="1"]
+[ext_resource type="ArrayMesh" uid="uid://cewl0cqln7voy" path="res://Entity/Creature/Human/meshs/dress_mini_03.mesh" id="1"]
 [ext_resource type="Material" uid="uid://byww3xe8f5xr8" path="res://Entity/Creature/Human/meshs/mats/dress_mini_03.tres" id="2_l0vra"]
 
 [node name="dress_mini_03" type="MeshInstance3D"]

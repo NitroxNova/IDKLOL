@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://c6col2unw2me3"]
+
+[ext_resource type="ArrayMesh" path="res://Entity/Creature/Human/meshs/medieval_dress.mesh" id="1_m4mcy"]
+[ext_resource type="Texture2D" uid="uid://dc5e5fqp8nki" path="res://Entity/Creature/Human/meshs/mats/medievaldress.png" id="2_hsdhe"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tdr08"]
+cull_mode = 2
+albedo_texture = ExtResource("2_hsdhe")
+
+[node name="medieval_dress" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1.1, 0, 0, 0, 1, 0, -0.138205, 0)
+mesh = ExtResource("1_m4mcy")
+surface_material_override/0 = SubResource("StandardMaterial3D_tdr08")

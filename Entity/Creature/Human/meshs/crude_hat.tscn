@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dtkxaguvp3kq4"]
+
+[ext_resource type="ArrayMesh" uid="uid://be034e5ljvnqa" path="res://Entity/Creature/Human/meshs/crude_hat.mesh" id="1_281du"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yls40"]
+cull_mode = 2
+albedo_color = Color(0, 0, 0, 1)
+
+[node name="crude_hat" type="MeshInstance3D"]
+mesh = ExtResource("1_281du")
+surface_material_override/0 = SubResource("StandardMaterial3D_yls40")

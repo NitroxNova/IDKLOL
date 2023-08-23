@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://b2fucsdqpxmwm"]
+
+[ext_resource type="ArrayMesh" path="res://Entity/Creature/Human/meshs/crude_loose_pants.mesh" id="1_bgqxf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_84tou"]
+cull_mode = 2
+albedo_color = Color(0.839216, 0.643137, 0.533333, 1)
+
+[node name="crude_loose_pants" type="MeshInstance3D"]
+mesh = ExtResource("1_bgqxf")
+surface_material_override/0 = SubResource("StandardMaterial3D_84tou")

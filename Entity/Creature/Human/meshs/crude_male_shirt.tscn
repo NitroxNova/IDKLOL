@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://bjsuppmfwxj8j"]
+
+[ext_resource type="ArrayMesh" path="res://Entity/Creature/Human/meshs/crude_male_shirt.mesh" id="1_x4cek"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dypka"]
+cull_mode = 2
+
+[node name="crude_male_shirt" type="MeshInstance3D"]
+mesh = ExtResource("1_x4cek")
+surface_material_override/0 = SubResource("StandardMaterial3D_dypka")

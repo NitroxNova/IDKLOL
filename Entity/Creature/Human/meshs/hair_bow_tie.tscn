@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://ck86cgx04wixw"]
+
+[ext_resource type="ArrayMesh" path="res://Entity/Creature/Human/meshs/hair_bow_tie.mesh" id="1_alywx"]
+[ext_resource type="Texture2D" uid="uid://ceea2oha1jeci" path="res://Entity/Creature/Human/meshs/mats/hair_bow_tie.png" id="2_fwdub"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gud6y"]
+cull_mode = 2
+albedo_texture = ExtResource("2_fwdub")
+
+[node name="hair_bow_tie" type="MeshInstance3D"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, -0.171124, 0)
+mesh = ExtResource("1_alywx")
+surface_material_override/0 = SubResource("StandardMaterial3D_gud6y")

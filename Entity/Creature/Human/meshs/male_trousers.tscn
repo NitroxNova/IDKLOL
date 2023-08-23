@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://b3y6qav4bimye"]
+
+[ext_resource type="ArrayMesh" path="res://Entity/Creature/Human/meshs/male_trousers.mesh" id="1_d5oaf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mqly8"]
+cull_mode = 2
+albedo_color = Color(0.0980392, 0.0980392, 0.0980392, 1)
+
+[node name="male_trousers" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.1, 0, 0, -0.01)
+mesh = ExtResource("1_d5oaf")
+surface_material_override/0 = SubResource("StandardMaterial3D_mqly8")

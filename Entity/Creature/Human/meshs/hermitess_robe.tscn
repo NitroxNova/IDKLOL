@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://betpvxsltknhc"]
+
+[ext_resource type="ArrayMesh" uid="uid://dpxtqu2y1wn4o" path="res://Entity/Creature/Human/meshs/hermitess_robe.mesh" id="1_fvxbe"]
+[ext_resource type="Texture2D" uid="uid://blljfb4ldplma" path="res://Entity/Creature/Human/meshs/mats/hermitess1.png" id="2_f3ilf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vb3kr"]
+cull_mode = 2
+albedo_texture = ExtResource("2_f3ilf")
+
+[node name="hermitess_robe" type="MeshInstance3D"]
+transform = Transform3D(1.1, 0, 0, 0, 1, 0, 0, 0, 1.2, 0, 0, -0.00807178)
+mesh = ExtResource("1_fvxbe")
+surface_material_override/0 = SubResource("StandardMaterial3D_vb3kr")
