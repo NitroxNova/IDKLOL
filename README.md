@@ -6,6 +6,13 @@ RESOURCES
 Character Creator:  
 GoMakeHumanDot - https://github.com/Lexpartizan/Go_MakeHuman_dot  
 MakeHuman - http://www.makehumancommunity.org/  
+MakeHuman Clothing:  
+-- Joel Palmius - Crude Hat, Crude Male Shirt, Crude Loose Leggings  
+-- punkduck - Medieval Dress  
+-- Elvaerwyn - Male Trench Coat, Male Trousers, Mens Apron  
+-- Mindfront - Summer Dress  
+-- grinsegold - Bow Tie Hair, Full Beard  
+-- brkurt - Brunhilde Hair
   
 materials:  
 https://ambientcg.com/list 
