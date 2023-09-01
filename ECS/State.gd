@@ -4,12 +4,18 @@ class_name State
 enum {NEEDS_INPUT,RUN,PLAYER_DEAD}
 
 var state = RUN
-var current_player : int
+var current_player_id : int
+var current_player : Dictionary
 var ECS = Entity_Component_System.new()
 var save_file : String
 
+func set_current_player(id:int):
+	current_player_id = id
+	current_player = ECS.get_entity(current_player_id)
+
 func run_systems(delta):
 	Render_System.run(delta,ECS)
+	Dialogue_System.run(delta,ECS)
 	Inventory_System.run(delta,ECS)
 	Monster_AI_System.run(delta,ECS)
 	Confusion_System.run(delta,ECS)
@@ -26,4 +32,4 @@ func run_systems(delta):
 	Entity_Cleanup_System.run(delta,ECS)
 
 func save():
-	Save_System.save(ECS,save_file,current_player)
+	Save_System.save(ECS,save_file,current_player_id)

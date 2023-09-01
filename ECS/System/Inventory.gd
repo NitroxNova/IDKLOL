@@ -45,7 +45,10 @@ static func drop_items(delta:float, ECS:Entity_Component_System):
 		var i_id = entity.drop_item
 		var item = ECS.get_entity(i_id)
 		var position = entity.rendered.get_node("Hands").global_position
-		ECS.add_component(i_id,"needs_render",{position=position,rotation=Vector3.ZERO})	
+#		ECS.add_component(i_id,"needs_render",{position=position,rotation=Vector3.ZERO})	
+		ECS.add_component(i_id,"needs_render",true)
+		ECS.add_component(i_id,"position",position)
+		ECS.add_component(i_id,"rotation",Vector3.ZERO)
 		remove_from_inventory(i_id,ECS)	
 		ECS.remove_component(e_id,"drop_item")
 #		print("dropping item")

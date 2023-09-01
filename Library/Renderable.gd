@@ -1,8 +1,10 @@
 extends Resource
 class_name Renderable
 
-enum {BARREL,CANDELABRUM, CEILING, CHAIR, FLOOR, GOBLIN, HANGING_SIGN, HUMAN, ORC, SINGLE_BED, TABLE, ROOF, WALL, GROUND, SHALLOW_WATER, DEEP_WATER, TREE, STONE_WALL_TOP, STONE_WALL_ENTRANCE}
+enum { ITEM_HEALTH_POTION,
+	BARREL,CANDELABRUM, CEILING, CHAIR, FLOOR, GOBLIN, HANGING_SIGN, HUMAN, ORC, SINGLE_BED, TABLE, ROOF, WALL, GROUND, SHALLOW_WATER, DEEP_WATER, TREE, STONE_WALL_TOP, STONE_WALL_ENTRANCE}
 const scene_list = {
+	ITEM_HEALTH_POTION:preload("res://Entity/Item/Health_Potion.tscn"),
 	BARREL:preload("res://Entity/Furniture/Barrel/barrel.tscn"),
 	CANDELABRUM:preload("res://Entity/Furniture/Candelabrum/entity.tscn"),
 	CEILING:preload("res://Entity/Structure/Ceiling.tscn"),

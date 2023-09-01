@@ -7,9 +7,11 @@ func _init():
 	component.clothes = ["male_shirt_01","male_jeans_01"] #temp array for clothing names, will replace with equipment
 	component.combat_stats = {power=2.0,defense=3.0}
 	component.confused = 1.2 #seconds remaining of confusion
+	component.conversation_engaged = true 
 	component.consumable = true #tag
 	component.contained_in = 123 #container or player id
 	component.dead = true #tag component
+	component.dialogue = ["hi","how are you?"] #array of 'quips'
 	component.drop_item = 123 #item id to drop
 	component.duration = 12.3 #timer in seconds, delete when 0
 	component.genotype = {} #Dictionary of "gene values" will be different for each species
@@ -48,5 +50,6 @@ func _init():
 	component.summons_projectile = {scene="scene_path.tscn",name="projectile name",speed=12.3} #speed (meters per second) is multiplied by direction facing to get velocity
 	component.use_item = 123 #id of item to use
 	component.viewshed = 0.0 #range
+	component.voice_id = "English (America)+male8" #string id for DisplayServer text to speech
 	
 
