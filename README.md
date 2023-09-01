@@ -1,5 +1,13 @@
 # IDKLOL  
 based on the ECS Rusty Rouglelike - https://bfnightly.bracketproductions.com/chapter_1.html  
+
+if text to speech isnt working, install speech-dispatcher    
+----Arch Linux----  
+pacman -S speech-dispatcher festival espeakup  
+----Debian----  
+sudo apt install speech-dispatcher festival espeakup  
+  
+more info: https://docs.godotengine.org/en/stable/tutorials/audio/text_to_speech.html  
   
 RESOURCES  
   
