@@ -91,15 +91,19 @@ func render():
 					TILE_TYPE.wood_floor:
 						data.renderable = Renderable.FLOOR
 						data.material = Material_3D.DARK_PLANKS
+						data.name = "Wood Floor"
 					TILE_TYPE.door:
 						data.renderable = Renderable.FLOOR
 						data.material = Material_3D.DARK_PLANKS
+						data.name = "Wood Floor"
 					TILE_TYPE.wall:
 						data.renderable = Renderable.WALL
+						data.name = "Wall"
 					TILE_TYPE.tree:
 						data.renderable = Renderable.TREE
 						data.rotation = Vector3(0,randf_range(0,2*PI),0)
 						data.scale = Vector3(1,1,1) * randf_range(.5,2)
+						data.name = "Tree"
 						var g_data = {}
 						g_data.renderable = Renderable.GROUND
 						g_data.material = Material_3D.GRASS

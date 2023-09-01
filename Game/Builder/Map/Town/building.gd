@@ -22,7 +22,6 @@ func build():
 
 func make_sign(texture):
 #	print("make sign " + texture)
-	print(direction)
 	var sign = Spawn.get_data(Spawn.HANGING_SIGN)
 	sign.material = texture
 	sign.position = Vector3.ZERO
@@ -85,6 +84,7 @@ func render():
 			data.position = Vector3(x,0,y)
 			data.renderable = Renderable.FLOOR
 			data.material = Material_3D.DARK_PLANKS
+			data.name = "Wood Floor"
 			create_entity.emit(data)
 	
 	for rel_x in size.x:
@@ -108,6 +108,7 @@ func render_wall(rel_x,rel_y):
 		data.position = Vector3(x,0,y)
 		data.renderable = Renderable.WALL
 		data.material = blueprint.material[0]
+		data.name = "Wall"
 		emit_signal("create_entity",data)
 
 func render_roof():

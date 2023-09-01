@@ -26,6 +26,19 @@ handle_input_locally = false
 size = Vector2i(1000, 648)
 render_target_update_mode = 4
 
+[node name="Looking_At" type="Label" parent="Game_Window/SubViewport"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -41.0
+offset_top = 20.0
+offset_right = 41.0
+offset_bottom = 46.0
+grow_horizontal = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = "Looking At"
+
 [node name="VBox" type="VBoxContainer" parent="Game_Window/SubViewport"]
 anchors_preset = 7
 anchor_left = 0.5
@@ -40,7 +53,7 @@ grow_vertical = 0
 size_flags_vertical = 4
 alignment = 1
 
-[node name="Item_Label" type="Label" parent="Game_Window/SubViewport/VBox"]
+[node name="Interact" type="Label" parent="Game_Window/SubViewport/VBox"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 20
