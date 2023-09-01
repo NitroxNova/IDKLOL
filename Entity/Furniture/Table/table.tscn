@@ -1,16 +1,18 @@
 [gd_scene load_steps=4 format=3 uid="uid://c3pwmdqsrhfyt"]
 
-[ext_resource type="PackedScene" uid="uid://b5pl23n360l6x" path="res://Entity/Furniture/Table/table.blend" id="1_c6fl8"]
+[ext_resource type="PackedScene" uid="uid://brt6ybkkhcmyn" path="res://Entity/Furniture/Table/table.blend" id="1_c6fl8"]
 [ext_resource type="Script" path="res://Entity/Entity.gd" id="1_o77ml"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xgmt4"]
-size = Vector3(1, 0.4, 0.5)
+size = Vector3(1, 0.8, 1)
 
 [node name="Table" type="StaticBody3D"]
+disable_mode = 1
 script = ExtResource("1_o77ml")
 
 [node name="table" parent="." instance=ExtResource("1_c6fl8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0655448, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.19722, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.433493, 0)
 shape = SubResource("BoxShape3D_xgmt4")

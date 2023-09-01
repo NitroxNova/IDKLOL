@@ -1,16 +1,18 @@
 [gd_scene load_steps=4 format=3 uid="uid://cs10mkscwd0mx"]
 
 [ext_resource type="Script" path="res://Entity/Entity.gd" id="1_727dp"]
-[ext_resource type="PackedScene" uid="uid://dg7p68aqdo1cp" path="res://Entity/Furniture/Chair/chair.blend" id="2_55ywm"]
+[ext_resource type="PackedScene" uid="uid://bmiw1myttgnvh" path="res://Entity/Furniture/Chair/chair.blend" id="2_55ywm"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ftmn6"]
-size = Vector3(0.2, 0.45, 0.2)
+size = Vector3(0.5, 1, 0.5)
 
 [node name="Chair" type="StaticBody3D"]
+disable_mode = 1
 script = ExtResource("1_727dp")
 
 [node name="chair" parent="." instance=ExtResource("2_55ywm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0424418, 0, 0.034043)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.231629, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.483901, 0)
 shape = SubResource("BoxShape3D_ftmn6")

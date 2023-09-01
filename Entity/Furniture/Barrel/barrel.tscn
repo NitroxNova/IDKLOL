@@ -1,12 +1,13 @@
 [gd_scene load_steps=4 format=3 uid="uid://c8e4vts53sna7"]
 
 [ext_resource type="Script" path="res://Entity/Entity.gd" id="1_8t7fr"]
-[ext_resource type="PackedScene" uid="uid://chgxyi50jvmg6" path="res://Entity/Furniture/Barrel/Barrel.blend" id="2_4wptg"]
+[ext_resource type="PackedScene" uid="uid://cu86fhxgne5n6" path="res://Entity/Furniture/Barrel/Barrel.blend" id="2_4wptg"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_6fruu"]
 height = 1.0
 
 [node name="Barrel" type="StaticBody3D"]
+disable_mode = 1
 script = ExtResource("1_8t7fr")
 
 [node name="Barrel" parent="." instance=ExtResource("2_4wptg")]
